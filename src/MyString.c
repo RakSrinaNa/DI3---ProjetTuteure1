@@ -206,20 +206,7 @@ int IMPLEMENT(icaseEndWith)(const char * end, const char * str) {
  * @param str2 the second string
  * @return the new string
  */
-char * IMPLEMENT(concatenateString)(const char * str1, const char * str2) { /* TODO Pourquoi avoir str1 & str2 sur \0? Perte de pointers? */
-	/*
-    size_t length1 = stringLength(str1);
-    size_t length2 = stringLength(str2);
-    char *string;
-    if ((string = (char *) malloc((length1 + length2 + 1) * sizeof(char))) == NULL)
-    {
-        printf("Erreur allocation malloc");
-        exit(1);
-    }
-    copyStringWithLength(string, str1, length1);
-    copyStringWithLength(string + length1, str2, length2);
-    return string;
-    */
+char * IMPLEMENT(concatenateString)(const char * str1, const char * str2) {
 	int i = 0;
 	size_t length1 = stringLength(str1);
 	size_t length2 = stringLength(str2);

@@ -58,3 +58,5 @@ void IMPLEMENT(writeString)(const char * str, FILE * file) {
 char * IMPLEMENT(readString)(FILE * file) {
     return provided_readString(file);
 }
+
+
