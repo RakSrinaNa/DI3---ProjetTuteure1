@@ -66,17 +66,7 @@ static char decode(char key, char encoded)
     int shift = ((int) key) - 'A';
     if(encoded >= 'a' && encoded <= 'z')
     {
-        return (char) ('a' + mod(encoded - 'a' - shift, 26)); /* Shift back over small case letters */
+        return (char) ('a' + (encoded - 'a' - shift + 26) % 26); /* Shift back over small case letters */
     }
-    return (char) ('A' + mod(encoded - 'A' - shift, 26)); /* Shift back over upper case letters */
-}
-
-static int mod (const int a, const int b)
-{
-    int leftover = a % b;
-    if(leftover < 0) /* If the leftover of the euclid's division is negative */
-    {
-        leftover += b; /* Add the base to get back to a positive number, the modulo */
-    }
-    return leftover;
+    return (char) ('A' + (encoded - 'A' - shift + 26) % 26); /* Shift back over upper case letters */
 }

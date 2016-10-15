@@ -5,6 +5,7 @@
 
 char * formatDate(int date, int month, int year)
 {
+	int i;
     char * dateFormat;
     char * partsBuffer;
     if((dateFormat = (char *) malloc(11 * sizeof(char))) == NULL)
@@ -12,22 +13,29 @@ char * formatDate(int date, int month, int year)
         printf("Erreur allocation malloc!\n");
         exit(1);
     }
+	for(i = 0; i < 10; i++)
+	{
+		dateFormat[i] = '0';
+	}
+	dateFormat[2] = '/';
+	dateFormat[5] = '/';
+	dateFormat[11] = '\0';
     if((partsBuffer = (char *) malloc(5 * sizeof(char))) == NULL)
     {
         printf("Erreur allocation malloc!\n");
         exit(1);
     }
-    intToString(year, partsBuffer, 5);
-    insertString(dateFormat, 6, partsBuffer, 4);
-    intToString(month, partsBuffer, 5);
-    insertString(dateFormat, 3, partsBuffer, 2);
-    intToString(date, partsBuffer, 5);
-    insertString(dateFormat, 0, partsBuffer, 2);
+    intToString(year, partsBuffer, 5, 1);
+    insertInString(dateFormat, 6, partsBuffer, 4);
+    intToString(month, partsBuffer, 3, 1);
+    insertInString(dateFormat, 3, partsBuffer, 2);
+    intToString(date, partsBuffer, 3, 1);
+    insertInString(dateFormat, 0, partsBuffer, 2);
     free(partsBuffer);
     return dateFormat;
 }
 
-void intToString(const int number, char const * string, size_t stringLength, const int fillZeros)
+void intToString(const int number, char * const string, size_t stringLength, const int fillZeros)
 {
     int i = 0;
     int numberCopy = number;
@@ -35,24 +43,15 @@ void intToString(const int number, char const * string, size_t stringLength, con
     unsigned int maxCopy = (fillZeros || ((stringLength - 1) < intLength)) ? (stringLength - 1) : intLength;
     while(i < maxCopy)
     {
-        string[maxCopy - i] = (char) ('0' + (numberCopy) % 10);
+        string[maxCopy - i - 1] = (char) ('0' + (numberCopy) % 10);
         numberCopy /= 10;
+		i++;
     }
     if(number < 0)
     {
         string[0] = '-';
     }
-    string[maxCopy + 1] = '\0';
-}
-
-unsigned int charInInt(const int number)
-{
-    unsigned int base = 1;
-    while((number / power(10, base)) < 10)
-    {
-        base++;
-    }
-    return base;
+    string[maxCopy] = '\0';
 }
 
 long power(const int base, const int power)
@@ -118,19 +117,8 @@ long Hex2Dec(const char * hex)
     return result;
 }
 
-int getNumberValue(const char c)
+char * computeDocumentNumber(long id)
 {
-    if(c >= '0' && c <= '9')
-    {
-        return c - '0';
-    }
-    if(c >= 'a' && c<= 'z')
-    {
-        return 10 + (c - 'a');
-    }
-    if(c >= 'A' && c<= 'Z')
-    {
-        return 10 + (c - 'A');
-    }
-    return 0;
+    char c = 'a';
+    return &c;
 }
