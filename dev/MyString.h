@@ -26,7 +26,11 @@ char * subString(const char * start, const char * end);
 char * insertString(const char * src, int insertPosition, const char * toBeInserted, int insertLength);
 void insertInString(char * const src, int insertPosition, const char * toBeInserted, unsigned int insertLength);
 
-unsigned int charInInt(const int number);
+unsigned int charInNumber (const long number);
 int getNumberValue(const char c);
+char getCharNumber(const unsigned int number);
+
+void reverseString(char * string, size_t length);
+void exchangeChar(char * c1, char * c2);
 
 #endif

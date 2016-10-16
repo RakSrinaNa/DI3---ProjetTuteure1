@@ -1,9 +1,13 @@
 #include <printf.h>
+#include <stdlib.h>
 #include "DocumentUtil.h"
 #include "MyString.h"
 
 int main()
 {
-	printf("%s\n\n", formatDate(22, 4, 1996));
+	int ori = 233;
+	char * conv = computeDocumentNumber(ori);
+	printf("%d --> %s\n", ori, conv);
+	free(conv);
 	return 0;
 }

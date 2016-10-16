@@ -39,7 +39,7 @@ void intToString(const int number, char * const string, size_t stringLength, con
 {
     int i = 0;
     int numberCopy = number;
-    unsigned int intLength = charInInt(number);
+    unsigned int intLength = charInNumber(number);
     unsigned int maxCopy = (fillZeros || ((stringLength - 1) < intLength)) ? (stringLength - 1) : intLength;
     while(i < maxCopy)
     {
@@ -119,6 +119,37 @@ long Hex2Dec(const char * hex)
 
 char * computeDocumentNumber(long id)
 {
-    char c = 'a';
-    return &c;
+    return dec2Base(id, 36);
+}
+
+char * dec2Base(long number, const int base)
+{
+	char * converted;
+	int i;
+	char * tempChar;
+	unsigned int charCount = 0;
+	if((tempChar = (char *) malloc((base < 10 ? charInNumber(number) : power(2, charInNumber(number))) * sizeof(char))) == NULL)
+	{
+		printf("Erreur allocation malloc!");
+		exit(1);
+	}
+	while(number != 0)
+	{
+		tempChar[charCount] = getCharNumber((unsigned int) number % base);
+		charCount++;
+		number /= base;
+	}
+	if((converted = (char *) malloc((charCount + 1) * sizeof(char))) == NULL)
+	{
+		printf("Erreur allocation malloc!");
+		exit(1);
+	}
+	for(i = 0; i < charCount; i++)
+	{
+		converted[i] = tempChar[i];
+	}
+	converted[charCount] = '\0';
+	free(tempChar);
+	reverseString(converted, charCount + 1);
+	return converted;
 }

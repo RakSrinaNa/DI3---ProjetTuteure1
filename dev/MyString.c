@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <printf.h>
 #include "MyString.h"
+#include "DocumentUtil.h"
+
+void exchangeChar (char *string, char *string1);
 
 /**
  * Returns the lower case of a character.
@@ -383,12 +386,42 @@ int getNumberValue(const char c)
 	return 0;
 }
 
-unsigned int charInInt(const int number)
+unsigned int charInNumber (const long number)
 {
 	unsigned int base = 1;
 	while((number / power(10, base)) >= 1)
 	{
 		base++;
 	}
+	if(number < 0)
+	{
+		base++;
+	}
 	return base;
+}
+
+char getCharNumber(const unsigned int number)
+{
+	if(number < 10)
+	{
+		return (char) ('0' + number);
+	}
+	return (char) ('A' + number - 10);
+}
+
+void reverseString(char * string, size_t length)
+{
+	int i;
+	int maxIt = (int) ((length - 1) / 2);
+	for(i = 0; i < maxIt; i++)
+	{
+		exchangeChar(&string[i], &string[length - 2 - i]);
+	}
+}
+
+void exchangeChar (char * c1, char * c2)
+{
+	char temp = *c1;
+	*c1 = *c2;
+	*c2 = temp;
 }

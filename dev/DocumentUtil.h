@@ -10,5 +10,6 @@ long Bin2Dec(int tab[]);
 long Hex2Dec(const char * hex);
 
 char * computeDocumentNumber(long id);
+char * dec2Base(long number, const int base);
 
 #endif
