@@ -141,15 +141,14 @@ void IMPLEMENT(copyStringWithLength)(char * dest, const char * src, size_t destS
  * @param str the string to duplicate
  */
 char * IMPLEMENT(duplicateString)(const char * str) {
-    size_t length = stringLength(str) + 1;
-    char *string;
-    if ((string = (char *) malloc(length * sizeof(char))) == NULL)
+    size_t length = stringLength(str) + 1U;
+    char *result;
+    if ((result = (char *) malloc(length * sizeof(char))) == NULL)
     {
-        printf("Erreur allocation malloc");
-        exit(1);
+        fatalError("Erreur allocation malloc");
     }
-    copyStringWithLength(string, str, length);
-    return string;
+    copyStringWithLength(result, str, length);
+    return result;
 }
 
 /** Test if the string str begins by the string start, ignoring the case of the characters.
@@ -211,10 +210,9 @@ char * IMPLEMENT(concatenateString)(const char * str1, const char * str2) {
 	size_t length1 = stringLength(str1);
 	size_t length2 = stringLength(str2);
 	char *string;
-	if ((string = (char *) malloc((length1 + length2 + 1) * sizeof(char))) == NULL)
+	if ((string = (char *) malloc((length1 + length2 + 1U) * sizeof(char))) == NULL)
 	{
-		printf("Erreur allocation malloc");
-		exit(1);
+		fatalError("Erreur allocation malloc");
 	}
 	while(*str1 != '\0')
 	{
@@ -271,19 +269,18 @@ const char * IMPLEMENT(indexOfChar)(const char *str, char c) {
  */
 char * IMPLEMENT(subString)(const char * start, const char * end) {
     unsigned int i = 0;
-    char *string;
-    if ((string = (char *) malloc((long unsigned int)(end - start + 1) * sizeof(char))) == NULL)
+    char *result;
+    if ((result = (char *) malloc((long unsigned int)(end - start + 1) * sizeof(char))) == NULL)
     {
-        printf("Erreur allocation malloc");
-        exit(1);
+        fatalError("Erreur allocation malloc");
     }
     while ((start + i) != end) /* While we didn't reached the end */
     {
-        string[i] = start[i];
+        result[i] = start[i];
         i++;
     }
-    string[i] = '\0';
-    return string;
+    result[i] = '\0';
+    return result;
 }
 
 /** Like the strstr() function. It returns a pointer to the first occurrence of the string aiguille in the string meule_de_foin.
@@ -320,11 +317,11 @@ const char * IMPLEMENT(indexOfString)(const char *meule_de_foin, const char *aig
  * @param str the string to convert
  */
 void IMPLEMENT(makeUpperCaseString)(char * str) {
-    char *string = str;
-    while (*string != '\0')
+    char *result = str;
+    while (*result != '\0')
     {
-        *string = toUpperChar(*string);
-        string++;
+        *result = toUpperChar(*result);
+        result++;
     }
 }
 
@@ -332,11 +329,11 @@ void IMPLEMENT(makeUpperCaseString)(char * str) {
  * @param str the string to convert
  */
 void IMPLEMENT(makeLowerCaseString)(char * str) {
-    char *string = str;
-    while (*string != '\0')
+    char *result = str;
+    while (*result != '\0')
     {
-        *string = toLowerChar(*string);
-        string++;
+        *result = toLowerChar(*result);
+        result++;
     }
 }
 
@@ -352,14 +349,13 @@ void IMPLEMENT(makeLowerCaseString)(char * str) {
 char * IMPLEMENT(insertString)(const char * src, int insertPosition, const char * toBeInserted,
         int insertLength) {
     size_t strLength = stringLength(src);
-    char *string;
-    if ((string = (char *) malloc((strLength + (unsigned int)insertLength + 1) * sizeof(char))) == NULL)
+    char *result;
+    if ((result = (char *) malloc((strLength + (unsigned int)insertLength + 1) * sizeof(char))) == NULL)
     {
-        printf("Erreur allocation malloc");
-        exit(1);
+        fatalError("Erreur allocation malloc");
     }
-    copyStringWithLength(string, src, (size_t) (insertPosition + 1)); /* Copy before insert */
-    copyStringWithLength(string + insertPosition, toBeInserted, (size_t)(insertLength + 1)); /* Copy insert */
-    copyStringWithLength(string + insertPosition + insertLength, src + insertPosition, (size_t)(strLength - (unsigned int)insertPosition + 1)); /* Copy after insert */
-    return string;
+    copyStringWithLength(result, src, (size_t) ((unsigned int)insertPosition + 1U)); /* Copy before insert */
+    copyStringWithLength(result + insertPosition, toBeInserted, (size_t)((unsigned int)insertLength + 1U)); /* Copy insert */
+    copyStringWithLength(result + insertPosition + insertLength, src + insertPosition, (size_t)(strLength - (unsigned int)insertPosition + 1U)); /* Copy after insert */
+    return result;
 }

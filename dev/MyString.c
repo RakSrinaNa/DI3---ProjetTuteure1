@@ -278,15 +278,15 @@ void copyStringWithLength (char *dest, const char *src, size_t destSize)
  */
 char *duplicateString (const char *str)
 {
-	size_t length = stringLength(str);
-	char *string;
-	if ((string = (char *) malloc(length * sizeof(char))) == NULL)
+	size_t length = stringLength(str) + 1;
+	char *result;
+	if ((result = (char *) malloc(length * sizeof(char))) == NULL)
 	{
 		printf("Erreur allocation malloc");
 		exit(1);
 	}
-	copyStringWithLength(string, str, length);
-	return string;
+	copyStringWithLength(result, str, length);
+	return result;
 }
 
 /**

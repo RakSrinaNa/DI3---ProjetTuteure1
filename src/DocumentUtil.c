@@ -19,6 +19,10 @@
 
 #include <DocumentUtil.h>
 
+static void reverseString(char * string, size_t length);
+static void exchangeChar (char * c1, char * c2);
+static char getCharNumber(const long int number);
+
 /** Create a new string on the heap which represents the parameter as a number in basis 36.
  * @param id the number to convert
  * @return a new string
@@ -26,7 +30,59 @@
  * @warning the user is responsible for freeing the memory allocated for the new string
  */
 char * IMPLEMENT(computeDocumentNumber)(long id) {
-    return provided_computeDocumentNumber(id);
+    char * converted;
+    unsigned int i;
+    int base = 36;
+    char * tempChar;
+    unsigned int charCount = 0;
+    if((tempChar = (char *) malloc(7 * sizeof(char))) == NULL)
+    {
+        fatalError("Erreur allocation malloc!");
+    }
+    while(id != 0) /* While we still have numbers in base 10 to convert */
+    {
+        tempChar[charCount] = getCharNumber(id % base); /* Writing number in base 36 reversed */
+        charCount++;
+        id /= base;
+    }
+    if((converted = (char *) malloc((charCount + 1) * sizeof(char))) == NULL) /* Allocate only the necessary size */
+    {
+        fatalError("Erreur allocation malloc!");
+    }
+    for(i = 0; i < charCount; i++)
+    {
+        converted[i] = tempChar[i];
+    }
+    converted[charCount] = '\0';
+    free(tempChar);
+    reverseString(converted, charCount + 1);
+    return converted;
+}
+
+static void reverseString(char * string, size_t length)
+{
+	unsigned int i;
+	size_t maxIt = (length - 1U) / 2U;
+	for(i = 0; i < maxIt; i++)
+	{
+		exchangeChar(&string[i], &string[length - 2U - i]);
+	}
+}
+
+static void exchangeChar (char * c1, char * c2)
+{
+	char temp = *c1;
+	*c1 = *c2;
+	*c2 = temp;
+}
+
+static char getCharNumber(const long int number)
+{
+    if(number < 10)
+    {
+        return (char) ('0' + number);
+    }
+    return (char) ('A' + number - 10);
 }
 
 /** Create a new string on the heap which represents the date in the format DD/MM/YYYY.
@@ -38,9 +94,10 @@ char * IMPLEMENT(computeDocumentNumber)(long id) {
  * @warning the user is responsible for freeing the memory allocated for the new string
  */
 char * IMPLEMENT(formatDate)(int day, int month, int year) {
-    return provided_formatDate(day, month, year);
+    char dateFormat[11];
+    sprintf(dateFormat, "%02d/%02d/%04d", day, month, year);
+    return duplicateString(dateFormat);
 }
-
 
 /** Write a string in a binary file
  * @param str the string
@@ -58,5 +115,3 @@ void IMPLEMENT(writeString)(const char * str, FILE * file) {
 char * IMPLEMENT(readString)(FILE * file) {
     return provided_readString(file);
 }
-
-

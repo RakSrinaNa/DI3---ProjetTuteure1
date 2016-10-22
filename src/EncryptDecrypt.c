@@ -21,7 +21,6 @@
 
 static char encode(char key, char decoded);
 static char decode(char key, char encoded);
-static int mod(const int a, const int b);
 
 void IMPLEMENT(encrypt)(const char * key, char * str) {
     size_t keyLength = stringLength(key);

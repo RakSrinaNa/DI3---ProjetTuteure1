@@ -19,6 +19,7 @@
 
 #include <OperatorTable.h>
 #include <EncryptDecrypt.h>
+#include "MyString.h"
 
 /**
  * Create an empty table of operators.
@@ -26,7 +27,14 @@
  * @relates OperatorTable
  */
 OperatorTable * IMPLEMENT(OperatorTable_create)(void) {
-    return provided_OperatorTable_create();
+    OperatorTable * operatorTable = (OperatorTable *) malloc(sizeof(OperatorTable));
+    if(operatorTable == NULL)
+    {
+        fatalError("Erreur allocation malloc!");
+    }
+    operatorTable->recordCount = 0;
+    operatorTable->records = NULL;
+    return operatorTable;
 }
 
 /** Free a table of operators.
@@ -34,7 +42,13 @@ OperatorTable * IMPLEMENT(OperatorTable_create)(void) {
  * @relates OperatorTable
  */
 void IMPLEMENT(OperatorTable_destroy)(OperatorTable * table) {
-    provided_OperatorTable_destroy(table);
+    int i;
+    for(i = OperatorTable_getRecordCount(table) - 1; i >= 0; i--)
+    {
+        OperatorTable_removeRecord(table, i);
+    }
+    free(table->records);
+    free(table);
 }
 
 /** Load a table of operators from a file.
@@ -61,7 +75,7 @@ void IMPLEMENT(OperatorTable_saveToFile)(OperatorTable * table, const char * fil
  * @relates OperatorTable
  */
 int IMPLEMENT(OperatorTable_getRecordCount)(OperatorTable * table) {
-    return provided_OperatorTable_getRecordCount(table);
+    return table->recordCount;
 }
 
 /** Get the name of a record of a table of operators.
@@ -71,7 +85,11 @@ int IMPLEMENT(OperatorTable_getRecordCount)(OperatorTable * table) {
  * @relates OperatorTable
  */
 const char * IMPLEMENT(OperatorTable_getName)(OperatorTable * table, int recordIndex) {
-    return provided_OperatorTable_getName(table, recordIndex);
+    if(recordIndex >= OperatorTable_getRecordCount(table))
+    {
+        fatalError("L'enregistrement sort de la table!");
+    }
+    return table->records[recordIndex][0];
 }
 
 /** Get the password of a record of a table of operators.
@@ -81,7 +99,11 @@ const char * IMPLEMENT(OperatorTable_getName)(OperatorTable * table, int recordI
  * @relates OperatorTable
  */
 const char * IMPLEMENT(OperatorTable_getPassword)(OperatorTable * table, int recordIndex) {
-    return provided_OperatorTable_getPassword(table, recordIndex);
+	if(recordIndex > OperatorTable_getRecordCount(table))
+	{
+		fatalError("L'enregistrement sort de la table!");
+	}
+	return table->records[recordIndex][1];
 }
 
 /** Get the record index associated with an operator name.
@@ -91,7 +113,15 @@ const char * IMPLEMENT(OperatorTable_getPassword)(OperatorTable * table, int rec
  * @relates OperatorTable
  */
 int IMPLEMENT(OperatorTable_findOperator)(OperatorTable * table, const char * name) {
-    return provided_OperatorTable_findOperator(table, name);
+	int operatorIndex;
+	for(operatorIndex = 0; operatorIndex < OperatorTable_getRecordCount(table); operatorIndex++)
+	{
+		if(icaseCompareString(name, OperatorTable_getName(table, operatorIndex)) == 0)
+		{
+			return operatorIndex;
+		}
+	}
+	return -1;
 }
 
 /** Define or change the password of an operator
@@ -102,7 +132,30 @@ int IMPLEMENT(OperatorTable_findOperator)(OperatorTable * table, const char * na
  * @relates OperatorTable
  */
 int IMPLEMENT(OperatorTable_setOperator)(OperatorTable * table, const char * name, const char * password) {
-    return provided_OperatorTable_setOperator(table, name, password);
+	char *** newRecords;
+	int operatorIndex = OperatorTable_findOperator(table, name);
+	if(operatorIndex < 0)
+	{
+		operatorIndex = OperatorTable_getRecordCount(table);
+		newRecords = (char ***)realloc(table->records, ((long unsigned int)operatorIndex + 1U) * sizeof(char **));
+		if(newRecords == NULL)
+		{
+			fatalError("Erreur realloc!");
+		}
+		table->records = newRecords;
+		if((table->records[operatorIndex] = (char **) malloc(2 * sizeof(char *))) == NULL)
+		{
+			fatalError("Erreur malloc!");
+		}
+		table->records[operatorIndex][0] = duplicateString(name);
+		table->recordCount++;
+	}
+	else
+	{
+		free(table->records[operatorIndex][1]);
+	}
+	table->records[operatorIndex][1] = duplicateString(password);
+	return operatorIndex;
 }
 
 /** Remove an operator from the table.
@@ -111,6 +164,34 @@ int IMPLEMENT(OperatorTable_setOperator)(OperatorTable * table, const char * nam
  * @relates OperatorTable
  */
 void IMPLEMENT(OperatorTable_removeRecord)(OperatorTable * table, int recordIndex) {
-    provided_OperatorTable_removeRecord(table, recordIndex);
+	int i;
+	int count = OperatorTable_getRecordCount(table);
+	if(recordIndex >= count)
+	{
+		fatalError("Enregistrement hors de la table");
+	}
+	free(table->records[recordIndex][0]);
+	free(table->records[recordIndex][1]);
+	free(table->records[recordIndex]);
+	for(i = recordIndex; i < count; i++)
+	{
+		table->records[i] = table->records[i+1];
+	}
+	table->recordCount--;
+	count--;
+	if(count == 0)
+	{
+		free(table->records);
+		table->records = NULL;
+	}
+	else
+	{
+		char *** newRecords = (char ***)realloc(table->records, (long unsigned int)count * sizeof(char **));
+		if(newRecords == NULL)
+		{
+			fatalError("Erreur realloc!");
+		}
+		table->records = newRecords;
+	}
 }
 

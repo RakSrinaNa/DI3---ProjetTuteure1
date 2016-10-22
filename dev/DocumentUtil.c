@@ -3,51 +3,31 @@
 #include "MyString.h"
 #include "DocumentUtil.h"
 
-char * formatDate(int date, int month, int year)
+char * formatDate(int day, int month, int year)
 {
-	int i;
-    char * dateFormat;
-    char * partsBuffer;
-    if((dateFormat = (char *) malloc(11 * sizeof(char))) == NULL)
-    {
-        printf("Erreur allocation malloc!\n");
-        exit(1);
-    }
-	for(i = 0; i < 10; i++)
-	{
-		dateFormat[i] = '0';
-	}
-	dateFormat[2] = '/';
-	dateFormat[5] = '/';
-	dateFormat[11] = '\0';
-    if((partsBuffer = (char *) malloc(5 * sizeof(char))) == NULL)
-    {
-        printf("Erreur allocation malloc!\n");
-        exit(1);
-    }
-    intToString(year, partsBuffer, 5, 1);
-    insertInString(dateFormat, 6, partsBuffer, 4);
-    intToString(month, partsBuffer, 3, 1);
-    insertInString(dateFormat, 3, partsBuffer, 2);
-    intToString(date, partsBuffer, 3, 1);
-    insertInString(dateFormat, 0, partsBuffer, 2);
-    free(partsBuffer);
-    return dateFormat;
+	char dateFormat[11];
+	sprintf(dateFormat, "%02d/%02d/%04d", day, month, year);
+	return duplicateString(dateFormat);
 }
 
 void intToString(const int number, char * const string, size_t stringLength, const int fillZeros)
 {
     int i = 0;
     int numberCopy = number;
+	unsigned int negative = number < 0 ? 1 : 0;
     unsigned int intLength = charInNumber(number);
-    unsigned int maxCopy = (fillZeros || ((stringLength - 1) < intLength)) ? (stringLength - 1) : intLength;
+    size_t maxCopy = (fillZeros || ((stringLength - 1) < intLength)) ? (stringLength - 1) : intLength;
+	if(negative)
+	{
+		numberCopy *= -1;
+	}
     while(i < maxCopy)
     {
         string[maxCopy - i - 1] = (char) ('0' + (numberCopy) % 10);
         numberCopy /= 10;
 		i++;
     }
-    if(number < 0)
+    if(negative)
     {
         string[0] = '-';
     }
@@ -85,7 +65,7 @@ long Bin2Dec(int tab[])
     long result = BaseB2Dec(2, 15, &tab[1]);
     if(tab[0] == 1)
     {
-        result -= 32768;
+        result -= (1L << 15);
     }
     return result;
 }
@@ -152,4 +132,25 @@ char * dec2Base(long number, const int base)
 	free(tempChar);
 	reverseString(converted, charCount + 1);
 	return converted;
+}
+
+void Dec2Bin(short n, int tab[])
+{
+	int i = 0;
+	int negative = 0;
+	if(n < 0)
+	{
+		negative = 1;
+		n += (1 << 15);
+	}
+	do
+	{
+		tab[i] = n % 2;
+		n /= 2;
+		i++;
+	} while (n != 0);
+	if(negative)
+	{
+		tab[15] = 1;
+	}
 }

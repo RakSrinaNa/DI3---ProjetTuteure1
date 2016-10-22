@@ -5,9 +5,8 @@
 
 int main()
 {
-	int ori = 233;
-	char * conv = computeDocumentNumber(ori);
-	printf("%d --> %s\n", ori, conv);
-	free(conv);
+	char * date = aupetitADitTroisLignes(1, 9, 2010);
+	printf("%s\n", date);
+	free(date);
 	return 0;
 }
