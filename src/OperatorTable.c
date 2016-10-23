@@ -57,7 +57,33 @@ void IMPLEMENT(OperatorTable_destroy)(OperatorTable * table) {
  * @relates OperatorTable
  */
 OperatorTable * IMPLEMENT(OperatorTable_loadFromFile)(const char * filename) {
-    return provided_OperatorTable_loadFromFile(filename);
+	FILE * operatorsFile;
+	char tempLineUser[OPERATORTABLE_MAXNAMESIZE + 1];
+	char tempLinePassword[OPERATORTABLE_MAXPASSWORDSIZE + 1];
+	char * userResult;
+	char * passwordResult;
+	OperatorTable * operatorTable = OperatorTable_create();
+	if((operatorsFile = fopen(filename, "r")) == NULL)
+	{
+		fatalError("Couldn't open file");
+	}
+	while((userResult = fgets(tempLineUser, OPERATORTABLE_MAXNAMESIZE, operatorsFile)) != NULL && (passwordResult = fgets(tempLinePassword, OPERATORTABLE_MAXPASSWORDSIZE, operatorsFile)) != NULL)
+	{
+		if(icaseEndWith("\n", userResult))
+		{
+			userResult[stringLength(userResult) - 1] = '\0';
+		}
+		if(icaseEndWith("\n", passwordResult))
+		{
+			passwordResult[stringLength(passwordResult) - 1] = '\0';
+		}
+		OperatorTable_setOperator(operatorTable, userResult, passwordResult);
+	}
+	if(fclose(operatorsFile) != 0)
+	{
+		fatalError("Couldn't close file");
+	}
+	return operatorTable;
 }
 
 /** Save a table of operators to a file.
@@ -66,7 +92,35 @@ OperatorTable * IMPLEMENT(OperatorTable_loadFromFile)(const char * filename) {
  * @relates OperatorTable
  */
 void IMPLEMENT(OperatorTable_saveToFile)(OperatorTable * table, const char * filename) {
-    provided_OperatorTable_saveToFile(table, filename);
+	FILE * operatorsFile;
+	int indexSave;
+	if((operatorsFile = fopen(filename, "w")) == NULL)
+	{
+		fatalError("Couldn't open file");
+	}
+	for(indexSave = 0; indexSave < OperatorTable_getRecordCount(table); indexSave++)
+	{
+		if(fputs(OperatorTable_getName(table, indexSave), operatorsFile) < 0)
+		{
+			fatalError("Error writing in file!");
+		}
+		if(fputs("\n", operatorsFile) < 0)
+		{
+			fatalError("Error writing in file!");
+		}
+		if(fputs(OperatorTable_getPassword(table, indexSave), operatorsFile) < 0)
+		{
+			fatalError("Error writing in file!");
+		}
+		if(fputs("\n", operatorsFile) < 0)
+		{
+			fatalError("Error writing in file!");
+		}
+	}
+	if(fclose(operatorsFile) != 0)
+	{
+		fatalError("Couldn't close file");
+	}
 }
 
 /** Get the number of records of a table of operators
@@ -85,7 +139,7 @@ int IMPLEMENT(OperatorTable_getRecordCount)(OperatorTable * table) {
  * @relates OperatorTable
  */
 const char * IMPLEMENT(OperatorTable_getName)(OperatorTable * table, int recordIndex) {
-    if(recordIndex >= OperatorTable_getRecordCount(table))
+    if(recordIndex < 0 && recordIndex >= OperatorTable_getRecordCount(table))
     {
         fatalError("L'enregistrement sort de la table!");
     }
@@ -99,7 +153,7 @@ const char * IMPLEMENT(OperatorTable_getName)(OperatorTable * table, int recordI
  * @relates OperatorTable
  */
 const char * IMPLEMENT(OperatorTable_getPassword)(OperatorTable * table, int recordIndex) {
-	if(recordIndex > OperatorTable_getRecordCount(table))
+	if(recordIndex < 0 && recordIndex > OperatorTable_getRecordCount(table))
 	{
 		fatalError("L'enregistrement sort de la table!");
 	}
@@ -194,4 +248,3 @@ void IMPLEMENT(OperatorTable_removeRecord)(OperatorTable * table, int recordInde
 		table->records = newRecords;
 	}
 }
-

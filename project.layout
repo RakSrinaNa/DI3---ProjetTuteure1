@@ -1,19 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="debug" />
-	<File name="src/OperatorTable.c" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="5478" topLine="163" />
-		</Cursor>
-	</File>
 	<File name="src/DocumentUtilUnit.c" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="1154" topLine="34" />
-		</Cursor>
-	</File>
-	<File name="src/EncryptDecrypt.c" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="598" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="src/DocumentUtil.c" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -21,9 +11,9 @@
 			<Cursor1 position="3604" topLine="88" />
 		</Cursor>
 	</File>
-	<File name="src/OperatorTableUnit.c" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src/OperatorTable.c" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1014" topLine="15" />
+			<Cursor1 position="4230" topLine="102" />
 		</Cursor>
 	</File>
 	<File name="src/MyString.c" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -31,9 +21,19 @@
 			<Cursor1 position="10700" topLine="262" />
 		</Cursor>
 	</File>
-	<File name="include/Config.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="include/Config.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="4562" topLine="118" />
+		</Cursor>
+	</File>
+	<File name="src/OperatorTableUnit.c" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="6353" topLine="147" />
+		</Cursor>
+	</File>
+	<File name="src/EncryptDecrypt.c" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="598" topLine="0" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

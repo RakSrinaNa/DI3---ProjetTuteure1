@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <printf.h>
+#include <stdio.h>
 #include "Operatortable.h"
 #include "MyString.h
 #include "MyString.h"
@@ -127,4 +128,24 @@ void OperatorTable_destroy(OperatorTable * table)
 	}
 	free(table->records);
 	free(table);
+}
+
+OperatorTable * OperatorTable_loadFromFile(const char * filename)
+{
+	FILE * operatorsFile;
+	char tempLineUser[OPERATORTABLE_MAXNAMESIZE + 1];
+	char tempLinePassword[OPERATORTABLE_MAXPASSWORDSIZE + 1];
+	OperatorTable * operatorTable = OperatorTable_create();
+	if((operatorsFile = fopen(filename, "r")) == NULL)
+	{
+		fatalError("Couldn't open file");
+	}
+	while((tempLineUser = fgets(tempLineUser, OPERATORTABLE_MAXNAMESIZE, operatorsFile)) != NULL && (tempLinePassword = fgets(tempLinePassword, OPERATORTABLE_MAXPASSWORDSIZE, operatorsFile)) != NULL)
+	{
+		OperatorTable_setOperator(operatorTable, tempLineUser, tempLinePassword);
+	}
+	if(fclose(operatorsFile) != 0)
+	{
+		fatalError("Couldn't close file");
+	}
 }

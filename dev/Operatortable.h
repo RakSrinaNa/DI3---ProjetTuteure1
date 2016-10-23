@@ -25,5 +25,6 @@ int OperatorTable_findOperator(OperatorTable * table, const char * name);
 int OperatorTable_setOperator(OperatorTable * table, const char * name, const char *password );
 void OperatorTable_removeRecord(OperatorTable * table, int recordIndex);
 void OperatorTable_destroy(OperatorTable * table);
+OperatorTable * OperatorTable_loadFromFile(const char * filename);
 
 #endif
