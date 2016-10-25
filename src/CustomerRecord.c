@@ -21,52 +21,92 @@
 
 void IMPLEMENT(CustomerRecord_setValue_name)(CustomerRecord * record, const char * value)
 {
-  provided_CustomerRecord_setValue_name(record, value);
+	unsigned int i = 0;
+	while(i < CUSTOMERRECORD_NAME_SIZE - 1 && value[i] != '\0') /* For each character while we didn't went over the size */
+	{
+		record->name[i] = value[i];
+		i++;
+	}
+	record->name[i] = '\0';
 }
 
 void IMPLEMENT(CustomerRecord_setValue_address)(CustomerRecord * record, const char * value)
 {
-  provided_CustomerRecord_setValue_address(record, value);
+	unsigned int i = 0;
+	while(i < CUSTOMERRECORD_ADDRESS_SIZE - 1 && value[i] != '\0') /* For each character while we didn't went over the size */
+	{
+		record->address[i] = value[i];
+		i++;
+	}
+	record->address[i] = '\0';
 }
 
 void IMPLEMENT(CustomerRecord_setValue_postalCode)(CustomerRecord * record, const char * value)
 {
-  provided_CustomerRecord_setValue_postalCode(record, value);
+	unsigned int i = 0;
+	while(i < CUSTOMERRECORD_POSTALCODE_SIZE - 1 && value[i] != '\0') /* For each character while we didn't went over the size */
+	{
+	   record->postalCode[i] = value[i];
+	   i++;
+	}
+	record->postalCode[i] = '\0';
 }
 
 void IMPLEMENT(CustomerRecord_setValue_town)(CustomerRecord * record, const char * value)
 {
-  provided_CustomerRecord_setValue_town(record, value);
+	unsigned int i = 0;
+	while(i < CUSTOMERRECORD_TOWN_SIZE - 1 && value[i] != '\0') /* For each character while we didn't went over the size */
+	{
+	   record->town[i] = value[i];
+	   i++;
+	}
+	record->town[i] = '\0';
 }
 
 char * IMPLEMENT(CustomerRecord_getValue_name)(CustomerRecord * record)
 {
-  return provided_CustomerRecord_getValue_name(record);
+    return duplicateString(record->name);
 }
 
 char * IMPLEMENT(CustomerRecord_getValue_address)(CustomerRecord * record)
 {
-  return provided_CustomerRecord_getValue_address(record);
+    return duplicateString(record->address);
 }
 
 char * IMPLEMENT(CustomerRecord_getValue_postalCode)(CustomerRecord * record)
 {
-  return provided_CustomerRecord_getValue_postalCode(record);
+    return duplicateString(record->postalCode);
 }
 
 char * IMPLEMENT(CustomerRecord_getValue_town)(CustomerRecord * record)
 {
-  return provided_CustomerRecord_getValue_town(record);
+    return duplicateString(record->town);
 }
 
 void IMPLEMENT(CustomerRecord_init)(CustomerRecord * record)
 {
-  provided_CustomerRecord_init(record);
+    unsigned int i;
+    for(i = 0; i < CUSTOMERRECORD_NAME_SIZE; i++)
+    {
+        record->name[i] = '\0';
+    }
+    for(i = 0; i < CUSTOMERRECORD_ADDRESS_SIZE; i++)
+    {
+        record->address[i] = '\0';
+    }
+    for(i = 0; i < CUSTOMERRECORD_POSTALCODE_SIZE; i++)
+    {
+        record->postalCode[i] = '\0';
+    }
+    for(i = 0; i < CUSTOMERRECORD_TOWN_SIZE; i++)
+    {
+        record->town[i] = '\0';
+    }
 }
 
 void IMPLEMENT(CustomerRecord_finalize)(CustomerRecord * record)
 {
-  provided_CustomerRecord_finalize(record);
+	record = record;
 }
 
 void IMPLEMENT(CustomerRecord_read)(CustomerRecord * record, FILE * file)
@@ -78,4 +118,3 @@ void IMPLEMENT(CustomerRecord_write)(CustomerRecord * record, FILE * file)
 {
   provided_CustomerRecord_write(record, file);
 }
-

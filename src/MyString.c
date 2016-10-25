@@ -210,17 +210,17 @@ char * IMPLEMENT(concatenateString)(const char * str1, const char * str2) {
 	size_t length1 = stringLength(str1);
 	size_t length2 = stringLength(str2);
 	char *string;
-	if ((string = (char *) malloc((length1 + length2 + 1U) * sizeof(char))) == NULL)
+	if ((string = (char *) malloc((length1 + length2 + 1U) * sizeof(char))) == NULL) /* Allocate string of the size of the 2 string plus the terminating \0 */
 	{
 		fatalError("Erreur allocation malloc");
 	}
-	while(*str1 != '\0')
+	while(*str1 != '\0') /* Copying the first string in the final one */
 	{
 		*(string + i) = *str1;
 		i++;
 		str1++;
 	}
-	while(*str2 != '\0')
+	while(*str2 != '\0') /* Copying the second string in the final one */
 	{
 		*(string + i) = *str2;
 		i++;
@@ -237,9 +237,9 @@ char * IMPLEMENT(concatenateString)(const char * str1, const char * str2) {
  */
 const char * IMPLEMENT(indexOfChar)(const char *str, char c) {
     int i = 0;
-    while (str[i] != '\0')
+    while (str[i] != '\0') /* While we didn't reached the end */
     {
-        if (str[i] == c)
+        if (str[i] == c) /* If this is the char we want */
         {
             return &str[i];
         }
