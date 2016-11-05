@@ -25,7 +25,18 @@
  */
 int IMPLEMENT(CatalogRecord_isValueValid_code)(const char * value)
 {
-  return provided_CatalogRecord_isValueValid_code(value);
+    unsigned int i = 0;
+    while(value[i] != '\0')
+    {
+        if(!(('a' <= value[i] && 'z' >= value[i]) ||
+        ('A' <= value[i] && 'Z' >= value[i]) ||
+        ('0' <= value[i] && '9' >= value[i])))
+        {
+            return 0;
+        }
+        i++;
+    }
+    return 1;
 }
 
 /** Static function which test if the value is a positive number
@@ -34,7 +45,19 @@ int IMPLEMENT(CatalogRecord_isValueValid_code)(const char * value)
  */
 int IMPLEMENT(CatalogRecord_isValueValid_positiveNumber)(const char * value)
 {
-  return provided_CatalogRecord_isValueValid_positiveNumber(value);
+    char * ptr;
+    double d;
+    unsigned int i = 0;
+    while(value[i] != '\0')
+    {
+        if(!(('0' <= value[i] && '9' >= value[i]) || value[i] == '.'))
+        {
+            return 0;
+        }
+        i++;
+    }
+    d = strtod(value, &ptr);
+    return d >= 0;
 }
 
 /** Static function to set the code field from a string
@@ -191,4 +214,3 @@ void IMPLEMENT(CatalogRecord_write)(CatalogRecord * record, FILE * file)
 {
   provided_CatalogRecord_write(record, file);
 }
-

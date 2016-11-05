@@ -24,23 +24,54 @@
 const char * CUSTOMERDB_FILENAME = BASEPATH "/data/Customer.db";
 
 CustomerDB * IMPLEMENT(CustomerDB_create)(const char * filename) {
-    return provided_CustomerDB_create(filename);
+    FILE * recordsFile = fopen(filename, "w+b");
+	CustomerDB * customerDB;
+	if(recordsFile == NULL)
+	{
+		return NULL;
+	}
+	if((customerDB = (CustomerDB *)malloc(sizeof(CustomerDB))) == NULL)
+	{
+        fatalError("Error malloc");
+	}
+	customerDB->file = recordsFile;
+	customerDB->recordCount = 0;
+    return customerDB;
 }
 
 CustomerDB * IMPLEMENT(CustomerDB_open)(const char * filename) {
-    return provided_CustomerDB_open(filename);
+	FILE * recordsFile = fopen(filename, "r+b");
+	CustomerDB * customerDB;
+	if(recordsFile == NULL)
+	{
+		return NULL;
+	}
+	if((customerDB = (CustomerDB *)malloc(sizeof(CustomerDB))) == NULL)
+	{
+		fatalError("Error malloc");
+	}
+	customerDB->file = recordsFile;
+    fread(&(customerDB->recordCount), sizeof(int), 1, recordsFile);
+	return customerDB;
 }
 
 CustomerDB * IMPLEMENT(CustomerDB_openOrCreate)(const char * filename) {
-    return provided_CustomerDB_openOrCreate(filename);
+    CustomerDB * customerDB;
+	if((customerDB = CustomerDB_open(filename)) == NULL && (customerDB = CustomerDB_create(filename)) == NULL)
+	{
+		return NULL;
+	}
+	return customerDB;
 }
 
 void IMPLEMENT(CustomerDB_close)(CustomerDB * customerDB) {
-    provided_CustomerDB_close(customerDB);
+    fseek(customerDB->file, 0, SEEK_SET);
+	fwrite(&(customerDB->recordCount), sizeof(int), 1, customerDB->file);
+	fclose(customerDB->file);
 }
 
 int IMPLEMENT(CustomerDB_getRecordCount)(CustomerDB * customerDB) {
-    return provided_CustomerDB_getRecordCount(customerDB);
+    return customerDB->recordCount;
 }
 
 char * CustomerDB_getFieldValueAsString(CustomerDB * customerDB, int recordIndex, int field) {
@@ -57,21 +88,45 @@ char * CustomerDB_getFieldValueAsString(CustomerDB * customerDB, int recordIndex
 }
 
 void IMPLEMENT(CustomerDB_appendRecord)(CustomerDB * customerDB, CustomerRecord *record) {
-    provided_CustomerDB_appendRecord(customerDB, record);
+	CustomerDB_writeRecord(customerDB, CustomerDB_getRecordCount(customerDB), record);
 }
 
 void IMPLEMENT(CustomerDB_insertRecord)(CustomerDB * customerDB, int recordIndex, CustomerRecord * record) {
-    provided_CustomerDB_insertRecord(customerDB, recordIndex, record);
+    CustomerRecord customRecord;
+    int i;
+    for(i = CustomerDB_getRecordCount(customerDB) - 1; i >= recordIndex; i--)
+    {
+        CustomerDB_readRecord(customerDB, i, &customRecord);
+        CustomerDB_writeRecord(customerDB, i + 1, &customRecord);
+    }
+    CustomerDB_writeRecord(customerDB, recordIndex, record);
 }
 
 void IMPLEMENT(CustomerDB_removeRecord)(CustomerDB * customerDB, int recordIndex) {
-    provided_CustomerDB_removeRecord(customerDB, recordIndex);
+    CustomerRecord customRecord;
+    int i;
+    for(i = recordIndex + 1; i < CustomerDB_getRecordCount(customerDB); i++)
+    {
+        CustomerDB_readRecord(customerDB, i, &customRecord);
+        CustomerDB_writeRecord(customerDB, i - 1, &customRecord);
+    }
+    customerDB->recordCount--;
 }
 
 void IMPLEMENT(CustomerDB_readRecord)(CustomerDB * customerDB, int recordIndex, CustomerRecord * record) {
-    provided_CustomerDB_readRecord(customerDB, recordIndex, record);
+	if(recordIndex >= CustomerDB_getRecordCount(customerDB))
+	{
+		fatalError("Record index isn't present");
+	}
+	fseek(customerDB->file, (long) (sizeof(int) + (long unsigned int)recordIndex * CUSTOMERRECORD_SIZE), SEEK_SET);
+	CustomerRecord_read(record, customerDB->file);
 }
 
 void IMPLEMENT(CustomerDB_writeRecord)(CustomerDB * customerDB, int recordIndex, CustomerRecord * record) {
-    provided_CustomerDB_writeRecord(customerDB, recordIndex, record);
+    if(recordIndex >= CustomerDB_getRecordCount(customerDB))
+    {
+        customerDB->recordCount++;
+    }
+	fseek(customerDB->file, (long)(sizeof(int) + (long unsigned int)recordIndex * CUSTOMERRECORD_SIZE), SEEK_SET);
+	CustomerRecord_write(record, customerDB->file);
 }

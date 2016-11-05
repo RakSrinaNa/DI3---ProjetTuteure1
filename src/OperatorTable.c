@@ -192,12 +192,11 @@ int IMPLEMENT(OperatorTable_findOperator)(OperatorTable * table, const char * na
  * @relates OperatorTable
  */
 int IMPLEMENT(OperatorTable_setOperator)(OperatorTable * table, const char * name, const char * password) {
-	char *** newRecords;
 	int operatorIndex = OperatorTable_findOperator(table, name);
 	if(operatorIndex < 0) /* If the user doesn't exist */
 	{
 		operatorIndex = OperatorTable_getRecordCount(table);
-		newRecords = (char ***)realloc(table->records, ((long unsigned int)operatorIndex + 1U) * sizeof(char **)); /* Realloc table to be able to contain a new user */
+		char *** newRecords = (char ***)realloc(table->records, ((long unsigned int)operatorIndex + 1U) * sizeof(char **)); /* Realloc table to be able to contain a new user */
 		if(newRecords == NULL) /* If the realloc failed */
 		{
 			fatalError("Realloc error!");

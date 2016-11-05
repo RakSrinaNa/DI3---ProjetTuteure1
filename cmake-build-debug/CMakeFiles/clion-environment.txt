@@ -1,0 +1,1 @@
+CMake: 3.6.2@/Users/mrcraftcod/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/163.7342.13/CLion 2016.3 EAP.app/Contents/bin/cmake/bin/cmake

@@ -21,46 +21,22 @@
 
 void IMPLEMENT(CustomerRecord_setValue_name)(CustomerRecord * record, const char * value)
 {
-	unsigned int i = 0;
-	while(i < CUSTOMERRECORD_NAME_SIZE - 1 && value[i] != '\0') /* For each character while we didn't went over the size */
-	{
-		record->name[i] = value[i];
-		i++;
-	}
-	record->name[i] = '\0';
+	copyStringWithLength(record->name, value, CUSTOMERRECORD_NAME_SIZE);
 }
 
 void IMPLEMENT(CustomerRecord_setValue_address)(CustomerRecord * record, const char * value)
 {
-	unsigned int i = 0;
-	while(i < CUSTOMERRECORD_ADDRESS_SIZE - 1 && value[i] != '\0') /* For each character while we didn't went over the size */
-	{
-		record->address[i] = value[i];
-		i++;
-	}
-	record->address[i] = '\0';
+	copyStringWithLength(record->address, value, CUSTOMERRECORD_ADDRESS_SIZE);
 }
 
 void IMPLEMENT(CustomerRecord_setValue_postalCode)(CustomerRecord * record, const char * value)
 {
-	unsigned int i = 0;
-	while(i < CUSTOMERRECORD_POSTALCODE_SIZE - 1 && value[i] != '\0') /* For each character while we didn't went over the size */
-	{
-	   record->postalCode[i] = value[i];
-	   i++;
-	}
-	record->postalCode[i] = '\0';
+	copyStringWithLength(record->postalCode, value, CUSTOMERRECORD_POSTALCODE_SIZE);
 }
 
 void IMPLEMENT(CustomerRecord_setValue_town)(CustomerRecord * record, const char * value)
 {
-	unsigned int i = 0;
-	while(i < CUSTOMERRECORD_TOWN_SIZE - 1 && value[i] != '\0') /* For each character while we didn't went over the size */
-	{
-	   record->town[i] = value[i];
-	   i++;
-	}
-	record->town[i] = '\0';
+	copyStringWithLength(record->town, value, CUSTOMERRECORD_TOWN_SIZE);
 }
 
 char * IMPLEMENT(CustomerRecord_getValue_name)(CustomerRecord * record)
@@ -111,10 +87,16 @@ void IMPLEMENT(CustomerRecord_finalize)(CustomerRecord * record)
 
 void IMPLEMENT(CustomerRecord_read)(CustomerRecord * record, FILE * file)
 {
-  provided_CustomerRecord_read(record, file);
+	fread(record->name, CUSTOMERRECORD_NAME_SIZE, 1, file);
+	fread(record->address, CUSTOMERRECORD_ADDRESS_SIZE, 1, file);
+	fread(record->postalCode, CUSTOMERRECORD_POSTALCODE_SIZE, 1, file);
+	fread(record->town, CUSTOMERRECORD_TOWN_SIZE, 1, file);
 }
 
 void IMPLEMENT(CustomerRecord_write)(CustomerRecord * record, FILE * file)
 {
-  provided_CustomerRecord_write(record, file);
+	fwrite(record->name, CUSTOMERRECORD_NAME_SIZE, 1, file);
+	fwrite(record->address, CUSTOMERRECORD_ADDRESS_SIZE, 1, file);
+	fwrite(record->postalCode, CUSTOMERRECORD_POSTALCODE_SIZE, 1, file);
+	fwrite(record->town, CUSTOMERRECORD_TOWN_SIZE, 1, file);
 }
