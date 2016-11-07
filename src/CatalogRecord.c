@@ -17,6 +17,7 @@
  * $Id: CatalogRecord.c 247 2010-09-10 10:23:07Z sebtic $
  */
 
+#include <MyString.h>
 #include <CatalogRecord.h>
 
 /** Static function which test if a code only contains numbers and letters
@@ -45,29 +46,13 @@ int IMPLEMENT(CatalogRecord_isValueValid_code)(const char * value)
  */
 int IMPLEMENT(CatalogRecord_isValueValid_positiveNumber)(const char * value)
 {
-    unsigned int i = 0;
-    unsigned int decimal = 0;
-    while(value[i] != '\0') /* While we didn't reach the end */
+    char ** endptr;
+    double d = strtod(value, endptr);
+    if(*endptr - (value + stringLength(value)) == 0) /* If strtod found a number until the end */
     {
-        if(value[i] = '-' && i > 0) /* If we have a - not at the beginning */
-        {
-            return 0;
-        }
-        if(value[i] == '.') /* If we jave a decimal point */
-        {
-            if(decimal) /* If we already had one */
-            {
-                return 0;
-            }
-            decimal = 1;
-        }
-        if(!('0' <= value[i] && '9' >= value[i])) /* If it's not a number */
-        {
-            return 0;
-        }
-        i++;
+        return d >= 0;
     }
-    return value[0] == '-';
+    return 0;
 }
 
 /** Static function to set the code field from a string
@@ -76,7 +61,14 @@ int IMPLEMENT(CatalogRecord_isValueValid_positiveNumber)(const char * value)
  */
 void IMPLEMENT(CatalogRecord_setValue_code)(CatalogRecord * record, const char * value)
 {
-  provided_CatalogRecord_setValue_code(record, value);
+    if(CatalogRecord_isValueValid_code(value))
+    {
+        copyStringWithLength(record->code, value, CATALOGRECORD_CODE_SIZE);
+    }
+    else
+    {
+        fatalError("Code is not correct");
+    }
 }
 
 /** Static function to set the designation field from a string
@@ -85,7 +77,7 @@ void IMPLEMENT(CatalogRecord_setValue_code)(CatalogRecord * record, const char *
  */
 void IMPLEMENT(CatalogRecord_setValue_designation)(CatalogRecord * record, const char * value)
 {
-  provided_CatalogRecord_setValue_designation(record, value);
+    copyStringWithLength(record->designation, value, CATALOGRECORD_DESIGNATION_SIZE);
 }
 
 /** Static function to set the unity field from a string
@@ -94,7 +86,7 @@ void IMPLEMENT(CatalogRecord_setValue_designation)(CatalogRecord * record, const
  */
 void IMPLEMENT(CatalogRecord_setValue_unity)(CatalogRecord * record, const char * value)
 {
-  provided_CatalogRecord_setValue_unity(record, value);
+    copyStringWithLength(record->unity, value, CATALOGRECORD_UNITY_SIZE);
 }
 
 /** Static function to set the basePrice field from a string
@@ -103,7 +95,14 @@ void IMPLEMENT(CatalogRecord_setValue_unity)(CatalogRecord * record, const char 
  */
 void IMPLEMENT(CatalogRecord_setValue_basePrice)(CatalogRecord * record, const char * value)
 {
-  provided_CatalogRecord_setValue_basePrice(record, value);
+    if(CatalogRecord_isValueValid_positiveNumber(value))
+    {
+        record->basePrice = strtod(value);
+    }
+    else
+    {
+        fatalError("Price is negative");
+    }
 }
 
 /** Static function to set the sellingPrice field from a string
@@ -112,7 +111,19 @@ void IMPLEMENT(CatalogRecord_setValue_basePrice)(CatalogRecord * record, const c
  */
 void IMPLEMENT(CatalogRecord_setValue_sellingPrice)(CatalogRecord * record, const char * value)
 {
-  provided_CatalogRecord_setValue_sellingPrice(record, value);
+    if(CatalogRecord_isValueValid_positiveNumber(value))
+    {
+        double price = strtod(value);
+        if(price < CatalogRecord_getValue_basePrice(record))
+        {
+            fatalError("Selling price is lower than the base price");
+        }
+        record->basePrice = price;
+    }
+    else
+    {
+        fatalError("Price is negative");
+    }
 }
 
 /** Static function to set the rateOfVAT field from a string
@@ -121,7 +132,14 @@ void IMPLEMENT(CatalogRecord_setValue_sellingPrice)(CatalogRecord * record, cons
  */
 void IMPLEMENT(CatalogRecord_setValue_rateOfVAT)(CatalogRecord * record, const char * value)
 {
-  provided_CatalogRecord_setValue_rateOfVAT(record, value);
+    if(CatalogRecord_isValueValid_positiveNumber(value))
+    {
+        record->rateOfVAT = strtod(value);
+    }
+    else
+    {
+        fatalError("Price is negative");
+    }
 }
 
 /** Static function which create a copy string on the head of the code field value
@@ -132,7 +150,7 @@ void IMPLEMENT(CatalogRecord_setValue_rateOfVAT)(CatalogRecord * record, const c
  */
 char * IMPLEMENT(CatalogRecord_getValue_code)(CatalogRecord * record)
 {
-  return provided_CatalogRecord_getValue_code(record);
+    return duplicateString(record->code);
 }
 
 /** Static function which create a copy string on the head of the designation field value
@@ -143,7 +161,7 @@ char * IMPLEMENT(CatalogRecord_getValue_code)(CatalogRecord * record)
  */
 char * IMPLEMENT(CatalogRecord_getValue_designation)(CatalogRecord * record)
 {
-  return provided_CatalogRecord_getValue_designation(record);
+    return duplicateString(record->designation);
 }
 
 /** Static function which create a copy string on the head of the unity field value
@@ -154,7 +172,7 @@ char * IMPLEMENT(CatalogRecord_getValue_designation)(CatalogRecord * record)
  */
 char * IMPLEMENT(CatalogRecord_getValue_unity)(CatalogRecord * record)
 {
-  return provided_CatalogRecord_getValue_unity(record);
+    return duplicateString(record->unity);
 }
 
 /** Static function which create a copy string on the head of the basePrice field value
@@ -165,7 +183,9 @@ char * IMPLEMENT(CatalogRecord_getValue_unity)(CatalogRecord * record)
  */
 char * IMPLEMENT(CatalogRecord_getValue_basePrice)(CatalogRecord * record)
 {
-  return provided_CatalogRecord_getValue_basePrice(record);
+    char output[50];
+    snprintf(output, 50, "%f", record->basePrice);
+    return duplicateString(output);
 }
 
 /** Static function which create a copy string on the head of the sellingPrice field value
@@ -176,7 +196,9 @@ char * IMPLEMENT(CatalogRecord_getValue_basePrice)(CatalogRecord * record)
  */
 char * IMPLEMENT(CatalogRecord_getValue_sellingPrice)(CatalogRecord * record)
 {
-  return provided_CatalogRecord_getValue_sellingPrice(record);
+    char output[50];
+    snprintf(output, 50, "%f", record->sellingPrice);
+    return duplicateString(output);
 }
 
 /** Static function which create a copy string on the head of the rateOfVAT field value
@@ -187,7 +209,9 @@ char * IMPLEMENT(CatalogRecord_getValue_sellingPrice)(CatalogRecord * record)
  */
 char * IMPLEMENT(CatalogRecord_getValue_rateOfVAT)(CatalogRecord * record)
 {
-  return provided_CatalogRecord_getValue_rateOfVAT(record);
+    char output[50];
+    snprintf(output, 50, "%f", record->rateOfVAT);
+    return duplicateString(output);
 }
 
 /** Initialize a record
@@ -196,7 +220,21 @@ char * IMPLEMENT(CatalogRecord_getValue_rateOfVAT)(CatalogRecord * record)
  */
 void IMPLEMENT(CatalogRecord_init)(CatalogRecord * record)
 {
-  provided_CatalogRecord_init(record);
+    if((record->code = malloc(CATALOGRECORD_CODE_SIZE)) == NULL)
+    {
+        fatalError("Malloc error");
+    }
+    if((record->designation = malloc(CATALOGRECORD_DESIGNATION_SIZE)) == NULL)
+    {
+        fatalError("Malloc error");
+    }
+    if((record->unity = malloc(CATALOGRECORD_UNITY_SIZE)) == NULL)
+    {
+        fatalError("Malloc error");
+    }
+    record->basePrice = 0;
+    record->sellingPrice = 0;
+    record->rateOfVAT = 0;
 }
 
 /** Finalize a record.
@@ -204,7 +242,9 @@ void IMPLEMENT(CatalogRecord_init)(CatalogRecord * record)
  */
 void IMPLEMENT(CatalogRecord_finalize)(CatalogRecord * record)
 {
-  provided_CatalogRecord_finalize(record);
+    free(record->code);
+    free(record->designation);
+    free(record->unity);
 }
 
 /** Read a record from a file
@@ -213,7 +253,12 @@ void IMPLEMENT(CatalogRecord_finalize)(CatalogRecord * record)
  */
 void IMPLEMENT(CatalogRecord_read)(CatalogRecord * record, FILE * file)
 {
-  provided_CatalogRecord_read(record, file);
+    fread(record->code, CATALOGRECORD_CODE_SIZE, 1, file);
+    fread(record->designation, CATALOGRECORD_DESIGNATION_SIZE, 1, file);
+    fread(record->unity, CATALOGRECORD_UNITY_SIZE, 1, file);
+    fread(&(record->basePrice), CATALOGRECORD_BASEPRICE_SIZE, 1, file);
+    fread(&(record->sellingPrice), CATALOGRECORD_SELLINGPRICE_SIZE, 1, file);
+    fread(&(record->rateOfVAT), CATALOGRECORD_RATEOFVAT_SIZE, 1, file);
 }
 
 /** Write a record to a file
@@ -222,5 +267,10 @@ void IMPLEMENT(CatalogRecord_read)(CatalogRecord * record, FILE * file)
  */
 void IMPLEMENT(CatalogRecord_write)(CatalogRecord * record, FILE * file)
 {
-  provided_CatalogRecord_write(record, file);
+    fwrite(record->code, CATALOGRECORD_CODE_SIZE, 1, file);
+    fwrite(record->designation, CATALOGRECORD_DESIGNATION_SIZE, 1, file);
+    fwrite(record->unity, CATALOGRECORD_UNITY_SIZE, 1, file);
+    fwrite(&(record->basePrice), CATALOGRECORD_BASEPRICE_SIZE, 1, file);
+    fwrite(&(record->sellingPrice), CATALOGRECORD_SELLINGPRICE_SIZE, 1, file);
+    fwrite(&(record->rateOfVAT), CATALOGRECORD_RATEOFVAT_SIZE, 1, file);
 }
