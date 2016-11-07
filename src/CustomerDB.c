@@ -24,13 +24,13 @@
 const char * CUSTOMERDB_FILENAME = BASEPATH "/data/Customer.db";
 
 CustomerDB * IMPLEMENT(CustomerDB_create)(const char * filename) {
-    FILE * recordsFile = fopen(filename, "w+b");
+    FILE * recordsFile = fopen(filename, "w+b"); /* Open binary file in read/write mode, resetting file if already existing */
 	CustomerDB * customerDB;
 	if(recordsFile == NULL)
 	{
 		return NULL;
 	}
-	if((customerDB = (CustomerDB *)malloc(sizeof(CustomerDB))) == NULL)
+	if((customerDB = (CustomerDB *)malloc(sizeof(CustomerDB))) == NULL) /* Allocate memory for the structure */
 	{
         fatalError("Error malloc");
 	}
@@ -40,13 +40,13 @@ CustomerDB * IMPLEMENT(CustomerDB_create)(const char * filename) {
 }
 
 CustomerDB * IMPLEMENT(CustomerDB_open)(const char * filename) {
-	FILE * recordsFile = fopen(filename, "r+b");
+	FILE * recordsFile = fopen(filename, "r+b"); /* Open binary file in read/write mode */
 	CustomerDB * customerDB;
 	if(recordsFile == NULL)
 	{
 		return NULL;
 	}
-	if((customerDB = (CustomerDB *)malloc(sizeof(CustomerDB))) == NULL)
+	if((customerDB = (CustomerDB *)malloc(sizeof(CustomerDB))) == NULL) /* Allocate memory for the structure */
 	{
 		fatalError("Error malloc");
 	}
@@ -57,7 +57,7 @@ CustomerDB * IMPLEMENT(CustomerDB_open)(const char * filename) {
 
 CustomerDB * IMPLEMENT(CustomerDB_openOrCreate)(const char * filename) {
     CustomerDB * customerDB;
-	if((customerDB = CustomerDB_open(filename)) == NULL && (customerDB = CustomerDB_create(filename)) == NULL)
+	if((customerDB = CustomerDB_open(filename)) == NULL && (customerDB = CustomerDB_create(filename)) == NULL) /* Try to load from an existing file, if failed, create it */
 	{
 		return NULL;
 	}
@@ -65,8 +65,8 @@ CustomerDB * IMPLEMENT(CustomerDB_openOrCreate)(const char * filename) {
 }
 
 void IMPLEMENT(CustomerDB_close)(CustomerDB * customerDB) {
-    fseek(customerDB->file, 0, SEEK_SET);
-	fwrite(&(customerDB->recordCount), sizeof(int), 1, customerDB->file);
+    fseek(customerDB->file, 0, SEEK_SET); /* Go at beginning of file */
+	fwrite(&(customerDB->recordCount), sizeof(int), 1, customerDB->file); /* Write the number of records */
 	fclose(customerDB->file);
 }
 
@@ -94,23 +94,23 @@ void IMPLEMENT(CustomerDB_appendRecord)(CustomerDB * customerDB, CustomerRecord 
 void IMPLEMENT(CustomerDB_insertRecord)(CustomerDB * customerDB, int recordIndex, CustomerRecord * record) {
     CustomerRecord customRecord;
     int i;
-    for(i = CustomerDB_getRecordCount(customerDB) - 1; i >= recordIndex; i--)
+    for(i = CustomerDB_getRecordCount(customerDB) - 1; i >= recordIndex; i--) /* Shift evry record starting at out index */
     {
         CustomerDB_readRecord(customerDB, i, &customRecord);
         CustomerDB_writeRecord(customerDB, i + 1, &customRecord);
     }
-    CustomerDB_writeRecord(customerDB, recordIndex, record);
+    CustomerDB_writeRecord(customerDB, recordIndex, record); /* Write record */
 }
 
 void IMPLEMENT(CustomerDB_removeRecord)(CustomerDB * customerDB, int recordIndex) {
     CustomerRecord customRecord;
     int i;
-    for(i = recordIndex + 1; i < CustomerDB_getRecordCount(customerDB); i++)
+    for(i = recordIndex + 1; i < CustomerDB_getRecordCount(customerDB); i++) /* Shift evry record starting at out index */
     {
         CustomerDB_readRecord(customerDB, i, &customRecord);
         CustomerDB_writeRecord(customerDB, i - 1, &customRecord);
     }
-    customerDB->recordCount--;
+    customerDB->recordCount--; /* Reduce the number of records */
 }
 
 void IMPLEMENT(CustomerDB_readRecord)(CustomerDB * customerDB, int recordIndex, CustomerRecord * record) {
@@ -118,15 +118,15 @@ void IMPLEMENT(CustomerDB_readRecord)(CustomerDB * customerDB, int recordIndex, 
 	{
 		fatalError("Record index isn't present");
 	}
-	fseek(customerDB->file, (long) (sizeof(int) + (long unsigned int)recordIndex * CUSTOMERRECORD_SIZE), SEEK_SET);
+	fseek(customerDB->file, (long) (sizeof(int) + (long unsigned int)recordIndex * CUSTOMERRECORD_SIZE), SEEK_SET); /* Seek the position to read */
 	CustomerRecord_read(record, customerDB->file);
 }
 
 void IMPLEMENT(CustomerDB_writeRecord)(CustomerDB * customerDB, int recordIndex, CustomerRecord * record) {
-    if(recordIndex >= CustomerDB_getRecordCount(customerDB))
+    if(recordIndex >= CustomerDB_getRecordCount(customerDB)) /* If it's a new record */
     {
         customerDB->recordCount++;
     }
-	fseek(customerDB->file, (long)(sizeof(int) + (long unsigned int)recordIndex * CUSTOMERRECORD_SIZE), SEEK_SET);
+	fseek(customerDB->file, (long)(sizeof(int) + (long unsigned int)recordIndex * CUSTOMERRECORD_SIZE), SEEK_SET); /* seek the positio to write */
 	CustomerRecord_write(record, customerDB->file);
 }

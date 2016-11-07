@@ -1,4 +1,4 @@
-/*
+ n/*
  * Copyright 2010 Sébastien Aupetit <sebastien.aupetit@univ-tours.fr>
  *
  * This source code is free software: you can redistribute it and/or modify it under

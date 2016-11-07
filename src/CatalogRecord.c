@@ -30,7 +30,7 @@ int IMPLEMENT(CatalogRecord_isValueValid_code)(const char * value)
     {
         if(!(('a' <= value[i] && 'z' >= value[i]) ||
         ('A' <= value[i] && 'Z' >= value[i]) ||
-        ('0' <= value[i] && '9' >= value[i])))
+        ('0' <= value[i] && '9' >= value[i]))) /* If we're not a small letter or a uppercase letter or a number */
         {
             return 0;
         }
@@ -45,19 +45,29 @@ int IMPLEMENT(CatalogRecord_isValueValid_code)(const char * value)
  */
 int IMPLEMENT(CatalogRecord_isValueValid_positiveNumber)(const char * value)
 {
-    char * ptr;
-    double d;
     unsigned int i = 0;
-    while(value[i] != '\0')
+    unsigned int decimal = 0;
+    while(value[i] != '\0') /* While we didn't reach the end */
     {
-        if(!(('0' <= value[i] && '9' >= value[i]) || value[i] == '.'))
+        if(value[i] = '-' && i > 0) /* If we have a - not at the beginning */
+        {
+            return 0;
+        }
+        if(value[i] == '.') /* If we jave a decimal point */
+        {
+            if(decimal) /* If we already had one */
+            {
+                return 0;
+            }
+            decimal = 1;
+        }
+        if(!('0' <= value[i] && '9' >= value[i])) /* If it's not a number */
         {
             return 0;
         }
         i++;
     }
-    d = strtod(value, &ptr);
-    return d >= 0;
+    return value[0] == '-';
 }
 
 /** Static function to set the code field from a string
