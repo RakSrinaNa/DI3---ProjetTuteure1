@@ -1,4 +1,4 @@
- n/*
+ /*
  * Copyright 2010 Sébastien Aupetit <sebastien.aupetit@univ-tours.fr>
  *
  * This source code is free software: you can redistribute it and/or modify it under
@@ -17,6 +17,7 @@
  * $Id: CustomerRecord.c 247 2010-09-10 10:23:07Z sebtic $
  */
 
+#include <MyString.h>
 #include <CustomerRecord.h>
 
 void IMPLEMENT(CustomerRecord_setValue_name)(CustomerRecord * record, const char * value)

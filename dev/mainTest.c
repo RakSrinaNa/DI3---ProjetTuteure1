@@ -1,12 +1,10 @@
-#include <printf.h>
+#include <stdio.h>
 #include <stdlib.h>
-#include "DocumentUtil.h"
-#include "MyString.h"
 
 int main()
 {
-	char * date = aupetitADitTroisLignes(1, 9, 2010);
-	printf("%s\n", date);
-	free(date);
+	char * test = "123";
+	double d = strtod(test, NULL);
+	printf("%lf\n", d);
 	return 0;
 }

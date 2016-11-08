@@ -68,6 +68,7 @@ void IMPLEMENT(CustomerDB_close)(CustomerDB * customerDB) {
     fseek(customerDB->file, 0, SEEK_SET); /* Go at beginning of file */
 	fwrite(&(customerDB->recordCount), sizeof(int), 1, customerDB->file); /* Write the number of records */
 	fclose(customerDB->file);
+	free(customerDB);
 }
 
 int IMPLEMENT(CustomerDB_getRecordCount)(CustomerDB * customerDB) {

@@ -29,7 +29,19 @@ const char * CATALOGDB_FILENAME = BASEPATH "/data/Catalog.db";
  * @return a pointer on a CatalogDB representing the opened database, NULL otherwise
  */
 CatalogDB * IMPLEMENT(CatalogDB_create)(const char * filename) {
-    return provided_CatalogDB_create(filename);
+    FILE * recordsFile = fopen(filename, "w+b"); /* Open binary file in read/write mode, resetting file if already existing */
+	CatalogDB * catalogDB;
+	if(recordsFile == NULL)
+	{
+		return NULL;
+	}
+	if((catalogDB = (CatalogDB *)malloc(sizeof(CatalogDB))) == NULL) /* Allocate memory for the structure */
+	{
+        fatalError("Error malloc");
+	}
+	catalogDB->file = recordsFile;
+	catalogDB->recordCount = 0;
+    return catalogDB;
 }
 
 /** Open an existing database of products
@@ -37,7 +49,19 @@ CatalogDB * IMPLEMENT(CatalogDB_create)(const char * filename) {
  * @return a pointer on a CatalogDB representing the opened database, NULL otherwise
  */
 CatalogDB * IMPLEMENT(CatalogDB_open)(const char * filename) {
-    return provided_CatalogDB_open(filename);
+    FILE * recordsFile = fopen(filename, "r+b"); /* Open binary file in read/write mode */
+	CatalogDB * catalogDB;
+	if(recordsFile == NULL)
+	{
+		return NULL;
+	}
+	if((catalogDB = (CatalogDB *)malloc(sizeof(CatalogDB))) == NULL) /* Allocate memory for the structure */
+	{
+		fatalError("Error malloc");
+	}
+	catalogDB->file = recordsFile;
+    fread(&(catalogDB->recordCount), sizeof(int), 1, recordsFile);
+	return catalogDB;
 }
 
 /** Open if exists or create otherwise a database of products
@@ -45,14 +69,22 @@ CatalogDB * IMPLEMENT(CatalogDB_open)(const char * filename) {
  * @return a pointer on a CatalogDB representing the opened database, NULL otherwise
  */
 CatalogDB * IMPLEMENT(CatalogDB_openOrCreate)(const char * filename) {
-    return provided_CatalogDB_openOrCreate(filename);
+    CatalogDB * catalogDB;
+	if((catalogDB = CatalogDB_open(filename)) == NULL && (catalogDB = CatalogDB_create(filename)) == NULL) /* Try to load from an existing file, if failed, create it */
+	{
+		return NULL;
+	}
+	return catalogDB;
 }
 
 /** Flush cached data, close a database and free the structure representing the opened database
  * @param catalogDB a pointer on a CatalogDB representing the opened database
  */
 void IMPLEMENT(CatalogDB_close)(CatalogDB * catalogDB) {
-    provided_CatalogDB_close(catalogDB);
+    fseek(catalogDB->file, 0, SEEK_SET); /* Go at beginning of file */
+	fwrite(&(catalogDB->recordCount), sizeof(int), 1, catalogDB->file); /* Write the number of records */
+	fclose(catalogDB->file);
+	free(catalogDB);
 }
 
 /** Get the number of records of the database
@@ -60,7 +92,7 @@ void IMPLEMENT(CatalogDB_close)(CatalogDB * catalogDB) {
  * @return the number of records
  */
 int IMPLEMENT(CatalogDB_getRecordCount)(CatalogDB * catalogDB) {
-    return provided_CatalogDB_getRecordCount(catalogDB);
+    return catalogDB->recordCount;
 }
 
 /** Create a new string on the heap containing the value of the specified field for the specified record of a database
@@ -89,7 +121,7 @@ char * CatalogDB_getFieldValueAsString(CatalogDB * catalogDB, int recordIndex, i
  * @param record the record
  */
 void IMPLEMENT(CatalogDB_appendRecord)(CatalogDB * catalogDB, CatalogRecord *record) {
-    provided_CatalogDB_appendRecord(catalogDB, record);
+    CatalogDB_writeRecord(catalogDB, CatalogDB_getRecordCount(catalogDB), record);
 }
 
 /** Insert the specified record at the given position in the database
@@ -98,7 +130,16 @@ void IMPLEMENT(CatalogDB_appendRecord)(CatalogDB * catalogDB, CatalogRecord *rec
  * @param record the record
  */
 void IMPLEMENT(CatalogDB_insertRecord)(CatalogDB * catalogDB, int recordIndex, CatalogRecord * record) {
-    provided_CatalogDB_insertRecord(catalogDB, recordIndex, record);
+    CatalogRecord catalogRecord;
+    CatalogRecord_init(&catalogRecord);
+    int i;
+    for(i = CatalogDB_getRecordCount(catalogDB) - 1; i >= recordIndex; i--) /* Shift evry record starting at out index */
+    {
+        CatalogDB_readRecord(catalogDB, i, &catalogRecord);
+        CatalogDB_writeRecord(catalogDB, i + 1, &catalogRecord);
+    }
+    CatalogRecord_finalize(&catalogRecord);
+    CatalogDB_writeRecord(catalogDB, recordIndex, record); /* Write record */
 }
 
 /** Remove a record at a given position from the database
@@ -106,7 +147,16 @@ void IMPLEMENT(CatalogDB_insertRecord)(CatalogDB * catalogDB, int recordIndex, C
  * @param recordIndex the removal position
  */
 void IMPLEMENT(CatalogDB_removeRecord)(CatalogDB * catalogDB, int recordIndex) {
-    provided_CatalogDB_removeRecord(catalogDB, recordIndex);
+    CatalogRecord catalogRecord;
+    CatalogRecord_init(&catalogRecord);
+    int i;
+    for(i = recordIndex + 1; i < CatalogDB_getRecordCount(catalogDB); i++) /* Shift evry record starting at out index */
+    {
+        CatalogDB_readRecord(catalogDB, i, &catalogRecord);
+        CatalogDB_writeRecord(catalogDB, i - 1, &catalogRecord);
+    }
+    CatalogRecord_finalize(&catalogRecord);
+    catalogDB->recordCount--; /* Reduce the number of records */
 }
 
 /** Read a record from the database
@@ -115,7 +165,12 @@ void IMPLEMENT(CatalogDB_removeRecord)(CatalogDB * catalogDB, int recordIndex) {
  * @param record the record to fill with data
  */
 void IMPLEMENT(CatalogDB_readRecord)(CatalogDB * catalogDB, int recordIndex, CatalogRecord * record) {
-    provided_CatalogDB_readRecord(catalogDB, recordIndex, record);
+    if(recordIndex >= CatalogDB_getRecordCount(catalogDB))
+	{
+		fatalError("Record index isn't present");
+	}
+	fseek(catalogDB->file, (long) (sizeof(int) + (long unsigned int)recordIndex * CATALOGRECORD_SIZE), SEEK_SET); /* Seek the position to read */
+	CatalogRecord_read(record, catalogDB->file);
 }
 
 /** Write a record from the database
@@ -124,6 +179,10 @@ void IMPLEMENT(CatalogDB_readRecord)(CatalogDB * catalogDB, int recordIndex, Cat
  * @param record the record containing the data
  */
 void IMPLEMENT(CatalogDB_writeRecord)(CatalogDB * catalogDB, int recordIndex, CatalogRecord * record) {
-    provided_CatalogDB_writeRecord(catalogDB, recordIndex, record);
+    if(recordIndex >= CatalogDB_getRecordCount(catalogDB)) /* If it's a new record */
+    {
+        catalogDB->recordCount++;
+    }
+	fseek(catalogDB->file, (long)(sizeof(int) + (long unsigned int)recordIndex * CATALOGRECORD_SIZE), SEEK_SET); /* seek the positio to write */
+	CatalogRecord_write(record, catalogDB->file);
 }
-

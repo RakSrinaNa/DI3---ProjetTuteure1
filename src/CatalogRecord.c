@@ -46,9 +46,10 @@ int IMPLEMENT(CatalogRecord_isValueValid_code)(const char * value)
  */
 int IMPLEMENT(CatalogRecord_isValueValid_positiveNumber)(const char * value)
 {
-    char ** endptr;
+    char * end = NULL;
+    char ** endptr = &end;
     double d = strtod(value, endptr);
-    if(*endptr - (value + stringLength(value)) == 0) /* If strtod found a number until the end */
+    if(*end == '\0') /* If strtod found a number until the end */
     {
         return d >= 0;
     }
@@ -97,7 +98,7 @@ void IMPLEMENT(CatalogRecord_setValue_basePrice)(CatalogRecord * record, const c
 {
     if(CatalogRecord_isValueValid_positiveNumber(value))
     {
-        record->basePrice = strtod(value);
+        record->basePrice = strtod(value, NULL);
     }
     else
     {
@@ -113,12 +114,7 @@ void IMPLEMENT(CatalogRecord_setValue_sellingPrice)(CatalogRecord * record, cons
 {
     if(CatalogRecord_isValueValid_positiveNumber(value))
     {
-        double price = strtod(value);
-        if(price < CatalogRecord_getValue_basePrice(record))
-        {
-            fatalError("Selling price is lower than the base price");
-        }
-        record->basePrice = price;
+        record->sellingPrice = strtod(value, NULL);
     }
     else
     {
@@ -134,7 +130,7 @@ void IMPLEMENT(CatalogRecord_setValue_rateOfVAT)(CatalogRecord * record, const c
 {
     if(CatalogRecord_isValueValid_positiveNumber(value))
     {
-        record->rateOfVAT = strtod(value);
+        record->rateOfVAT = strtod(value, NULL);
     }
     else
     {
@@ -184,7 +180,7 @@ char * IMPLEMENT(CatalogRecord_getValue_unity)(CatalogRecord * record)
 char * IMPLEMENT(CatalogRecord_getValue_basePrice)(CatalogRecord * record)
 {
     char output[50];
-    snprintf(output, 50, "%f", record->basePrice);
+    snprintf(output, 50, "%1.2lf", record->basePrice);
     return duplicateString(output);
 }
 
@@ -197,7 +193,7 @@ char * IMPLEMENT(CatalogRecord_getValue_basePrice)(CatalogRecord * record)
 char * IMPLEMENT(CatalogRecord_getValue_sellingPrice)(CatalogRecord * record)
 {
     char output[50];
-    snprintf(output, 50, "%f", record->sellingPrice);
+    snprintf(output, 50, "%1.2lf", record->sellingPrice);
     return duplicateString(output);
 }
 
@@ -210,7 +206,7 @@ char * IMPLEMENT(CatalogRecord_getValue_sellingPrice)(CatalogRecord * record)
 char * IMPLEMENT(CatalogRecord_getValue_rateOfVAT)(CatalogRecord * record)
 {
     char output[50];
-    snprintf(output, 50, "%f", record->rateOfVAT);
+    snprintf(output, 50, "%1.2lf", record->rateOfVAT);
     return duplicateString(output);
 }
 
