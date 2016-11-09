@@ -122,6 +122,8 @@ void IMPLEMENT(OperatorTable_saveToFile)(OperatorTable * table, const char * fil
 		{
 			fatalError("Error writing in file!");
 		}
+		free(encryptedUser);
+		free(encryptedPassword);
 	}
 	if(fclose(operatorsFile) != 0)
 	{
