@@ -1,9 +1,5 @@
 file(REMOVE_RECURSE
   "CMakeFiles/ProjetTutore1.dir/dev/mainTest.c.o"
-  "CMakeFiles/ProjetTutore1.dir/dev/MyString.c.o"
-  "CMakeFiles/ProjetTutore1.dir/dev/EncryptDecrypt.c.o"
-  "CMakeFiles/ProjetTutore1.dir/dev/DocumentUtil.c.o"
-  "CMakeFiles/ProjetTutore1.dir/dev/Operatortable.c.o"
   "ProjetTutore1.pdb"
   "ProjetTutore1"
 )

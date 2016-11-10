@@ -39,10 +39,10 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = "/Users/mrcraftcod/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/163.7342.13/CLion 2016.3 EAP.app/Contents/bin/cmake/bin/cmake"
+CMAKE_COMMAND = "/Users/mrcraftcod/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/163.7743.15/CLion 2016.3 EAP.app/Contents/bin/cmake/bin/cmake"
 
 # The command to remove a file.
-RM = "/Users/mrcraftcod/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/163.7342.13/CLion 2016.3 EAP.app/Contents/bin/cmake/bin/cmake" -E remove -f
+RM = "/Users/mrcraftcod/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/163.7743.15/CLion 2016.3 EAP.app/Contents/bin/cmake/bin/cmake" -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
@@ -59,7 +59,7 @@ CMAKE_BINARY_DIR = /Users/mrcraftcod/Dropbox/Documents/Univ/Polytech/DI3/S5/C/Pr
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	"/Users/mrcraftcod/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/163.7342.13/CLion 2016.3 EAP.app/Contents/bin/cmake/bin/cmake" -E echo No\ interactive\ CMake\ dialog\ available.
+	"/Users/mrcraftcod/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/163.7743.15/CLion 2016.3 EAP.app/Contents/bin/cmake/bin/cmake" -E echo No\ interactive\ CMake\ dialog\ available.
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -70,7 +70,7 @@ edit_cache/fast: edit_cache
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	"/Users/mrcraftcod/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/163.7342.13/CLion 2016.3 EAP.app/Contents/bin/cmake/bin/cmake" -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	"/Users/mrcraftcod/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/163.7743.15/CLion 2016.3 EAP.app/Contents/bin/cmake/bin/cmake" -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -123,114 +123,6 @@ ProjetTutore1/fast:
 	$(MAKE) -f CMakeFiles/ProjetTutore1.dir/build.make CMakeFiles/ProjetTutore1.dir/build
 .PHONY : ProjetTutore1/fast
 
-dev/DocumentUtil.o: dev/DocumentUtil.c.o
-
-.PHONY : dev/DocumentUtil.o
-
-# target to build an object file
-dev/DocumentUtil.c.o:
-	$(MAKE) -f CMakeFiles/ProjetTutore1.dir/build.make CMakeFiles/ProjetTutore1.dir/dev/DocumentUtil.c.o
-.PHONY : dev/DocumentUtil.c.o
-
-dev/DocumentUtil.i: dev/DocumentUtil.c.i
-
-.PHONY : dev/DocumentUtil.i
-
-# target to preprocess a source file
-dev/DocumentUtil.c.i:
-	$(MAKE) -f CMakeFiles/ProjetTutore1.dir/build.make CMakeFiles/ProjetTutore1.dir/dev/DocumentUtil.c.i
-.PHONY : dev/DocumentUtil.c.i
-
-dev/DocumentUtil.s: dev/DocumentUtil.c.s
-
-.PHONY : dev/DocumentUtil.s
-
-# target to generate assembly for a file
-dev/DocumentUtil.c.s:
-	$(MAKE) -f CMakeFiles/ProjetTutore1.dir/build.make CMakeFiles/ProjetTutore1.dir/dev/DocumentUtil.c.s
-.PHONY : dev/DocumentUtil.c.s
-
-dev/EncryptDecrypt.o: dev/EncryptDecrypt.c.o
-
-.PHONY : dev/EncryptDecrypt.o
-
-# target to build an object file
-dev/EncryptDecrypt.c.o:
-	$(MAKE) -f CMakeFiles/ProjetTutore1.dir/build.make CMakeFiles/ProjetTutore1.dir/dev/EncryptDecrypt.c.o
-.PHONY : dev/EncryptDecrypt.c.o
-
-dev/EncryptDecrypt.i: dev/EncryptDecrypt.c.i
-
-.PHONY : dev/EncryptDecrypt.i
-
-# target to preprocess a source file
-dev/EncryptDecrypt.c.i:
-	$(MAKE) -f CMakeFiles/ProjetTutore1.dir/build.make CMakeFiles/ProjetTutore1.dir/dev/EncryptDecrypt.c.i
-.PHONY : dev/EncryptDecrypt.c.i
-
-dev/EncryptDecrypt.s: dev/EncryptDecrypt.c.s
-
-.PHONY : dev/EncryptDecrypt.s
-
-# target to generate assembly for a file
-dev/EncryptDecrypt.c.s:
-	$(MAKE) -f CMakeFiles/ProjetTutore1.dir/build.make CMakeFiles/ProjetTutore1.dir/dev/EncryptDecrypt.c.s
-.PHONY : dev/EncryptDecrypt.c.s
-
-dev/MyString.o: dev/MyString.c.o
-
-.PHONY : dev/MyString.o
-
-# target to build an object file
-dev/MyString.c.o:
-	$(MAKE) -f CMakeFiles/ProjetTutore1.dir/build.make CMakeFiles/ProjetTutore1.dir/dev/MyString.c.o
-.PHONY : dev/MyString.c.o
-
-dev/MyString.i: dev/MyString.c.i
-
-.PHONY : dev/MyString.i
-
-# target to preprocess a source file
-dev/MyString.c.i:
-	$(MAKE) -f CMakeFiles/ProjetTutore1.dir/build.make CMakeFiles/ProjetTutore1.dir/dev/MyString.c.i
-.PHONY : dev/MyString.c.i
-
-dev/MyString.s: dev/MyString.c.s
-
-.PHONY : dev/MyString.s
-
-# target to generate assembly for a file
-dev/MyString.c.s:
-	$(MAKE) -f CMakeFiles/ProjetTutore1.dir/build.make CMakeFiles/ProjetTutore1.dir/dev/MyString.c.s
-.PHONY : dev/MyString.c.s
-
-dev/Operatortable.o: dev/Operatortable.c.o
-
-.PHONY : dev/Operatortable.o
-
-# target to build an object file
-dev/Operatortable.c.o:
-	$(MAKE) -f CMakeFiles/ProjetTutore1.dir/build.make CMakeFiles/ProjetTutore1.dir/dev/Operatortable.c.o
-.PHONY : dev/Operatortable.c.o
-
-dev/Operatortable.i: dev/Operatortable.c.i
-
-.PHONY : dev/Operatortable.i
-
-# target to preprocess a source file
-dev/Operatortable.c.i:
-	$(MAKE) -f CMakeFiles/ProjetTutore1.dir/build.make CMakeFiles/ProjetTutore1.dir/dev/Operatortable.c.i
-.PHONY : dev/Operatortable.c.i
-
-dev/Operatortable.s: dev/Operatortable.c.s
-
-.PHONY : dev/Operatortable.s
-
-# target to generate assembly for a file
-dev/Operatortable.c.s:
-	$(MAKE) -f CMakeFiles/ProjetTutore1.dir/build.make CMakeFiles/ProjetTutore1.dir/dev/Operatortable.c.s
-.PHONY : dev/Operatortable.c.s
-
 dev/mainTest.o: dev/mainTest.c.o
 
 .PHONY : dev/mainTest.o
@@ -267,18 +159,6 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... ProjetTutore1"
-	@echo "... dev/DocumentUtil.o"
-	@echo "... dev/DocumentUtil.i"
-	@echo "... dev/DocumentUtil.s"
-	@echo "... dev/EncryptDecrypt.o"
-	@echo "... dev/EncryptDecrypt.i"
-	@echo "... dev/EncryptDecrypt.s"
-	@echo "... dev/MyString.o"
-	@echo "... dev/MyString.i"
-	@echo "... dev/MyString.s"
-	@echo "... dev/Operatortable.o"
-	@echo "... dev/Operatortable.i"
-	@echo "... dev/Operatortable.s"
 	@echo "... dev/mainTest.o"
 	@echo "... dev/mainTest.i"
 	@echo "... dev/mainTest.s"

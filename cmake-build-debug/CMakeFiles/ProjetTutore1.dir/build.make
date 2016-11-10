@@ -34,10 +34,10 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = "/Users/mrcraftcod/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/163.7342.13/CLion 2016.3 EAP.app/Contents/bin/cmake/bin/cmake"
+CMAKE_COMMAND = "/Users/mrcraftcod/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/163.7743.15/CLion 2016.3 EAP.app/Contents/bin/cmake/bin/cmake"
 
 # The command to remove a file.
-RM = "/Users/mrcraftcod/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/163.7342.13/CLion 2016.3 EAP.app/Contents/bin/cmake/bin/cmake" -E remove -f
+RM = "/Users/mrcraftcod/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/163.7743.15/CLion 2016.3 EAP.app/Contents/bin/cmake/bin/cmake" -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
@@ -60,15 +60,15 @@ include CMakeFiles/ProjetTutore1.dir/flags.make
 CMakeFiles/ProjetTutore1.dir/dev/mainTest.c.o: CMakeFiles/ProjetTutore1.dir/flags.make
 CMakeFiles/ProjetTutore1.dir/dev/mainTest.c.o: ../dev/mainTest.c
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/mrcraftcod/Dropbox/Documents/Univ/Polytech/DI3/S5/C/ProjetTutore1/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/ProjetTutore1.dir/dev/mainTest.c.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/ProjetTutore1.dir/dev/mainTest.c.o   -c /Users/mrcraftcod/Dropbox/Documents/Univ/Polytech/DI3/S5/C/ProjetTutore1/dev/mainTest.c
+	/Library/Developer/CommandLineTools/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/ProjetTutore1.dir/dev/mainTest.c.o   -c /Users/mrcraftcod/Dropbox/Documents/Univ/Polytech/DI3/S5/C/ProjetTutore1/dev/mainTest.c
 
 CMakeFiles/ProjetTutore1.dir/dev/mainTest.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/ProjetTutore1.dir/dev/mainTest.c.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/mrcraftcod/Dropbox/Documents/Univ/Polytech/DI3/S5/C/ProjetTutore1/dev/mainTest.c > CMakeFiles/ProjetTutore1.dir/dev/mainTest.c.i
+	/Library/Developer/CommandLineTools/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/mrcraftcod/Dropbox/Documents/Univ/Polytech/DI3/S5/C/ProjetTutore1/dev/mainTest.c > CMakeFiles/ProjetTutore1.dir/dev/mainTest.c.i
 
 CMakeFiles/ProjetTutore1.dir/dev/mainTest.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/ProjetTutore1.dir/dev/mainTest.c.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/mrcraftcod/Dropbox/Documents/Univ/Polytech/DI3/S5/C/ProjetTutore1/dev/mainTest.c -o CMakeFiles/ProjetTutore1.dir/dev/mainTest.c.s
+	/Library/Developer/CommandLineTools/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/mrcraftcod/Dropbox/Documents/Univ/Polytech/DI3/S5/C/ProjetTutore1/dev/mainTest.c -o CMakeFiles/ProjetTutore1.dir/dev/mainTest.c.s
 
 CMakeFiles/ProjetTutore1.dir/dev/mainTest.c.o.requires:
 
@@ -81,121 +81,17 @@ CMakeFiles/ProjetTutore1.dir/dev/mainTest.c.o.provides: CMakeFiles/ProjetTutore1
 CMakeFiles/ProjetTutore1.dir/dev/mainTest.c.o.provides.build: CMakeFiles/ProjetTutore1.dir/dev/mainTest.c.o
 
 
-CMakeFiles/ProjetTutore1.dir/dev/MyString.c.o: CMakeFiles/ProjetTutore1.dir/flags.make
-CMakeFiles/ProjetTutore1.dir/dev/MyString.c.o: ../dev/MyString.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/mrcraftcod/Dropbox/Documents/Univ/Polytech/DI3/S5/C/ProjetTutore1/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/ProjetTutore1.dir/dev/MyString.c.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/ProjetTutore1.dir/dev/MyString.c.o   -c /Users/mrcraftcod/Dropbox/Documents/Univ/Polytech/DI3/S5/C/ProjetTutore1/dev/MyString.c
-
-CMakeFiles/ProjetTutore1.dir/dev/MyString.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/ProjetTutore1.dir/dev/MyString.c.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/mrcraftcod/Dropbox/Documents/Univ/Polytech/DI3/S5/C/ProjetTutore1/dev/MyString.c > CMakeFiles/ProjetTutore1.dir/dev/MyString.c.i
-
-CMakeFiles/ProjetTutore1.dir/dev/MyString.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/ProjetTutore1.dir/dev/MyString.c.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/mrcraftcod/Dropbox/Documents/Univ/Polytech/DI3/S5/C/ProjetTutore1/dev/MyString.c -o CMakeFiles/ProjetTutore1.dir/dev/MyString.c.s
-
-CMakeFiles/ProjetTutore1.dir/dev/MyString.c.o.requires:
-
-.PHONY : CMakeFiles/ProjetTutore1.dir/dev/MyString.c.o.requires
-
-CMakeFiles/ProjetTutore1.dir/dev/MyString.c.o.provides: CMakeFiles/ProjetTutore1.dir/dev/MyString.c.o.requires
-	$(MAKE) -f CMakeFiles/ProjetTutore1.dir/build.make CMakeFiles/ProjetTutore1.dir/dev/MyString.c.o.provides.build
-.PHONY : CMakeFiles/ProjetTutore1.dir/dev/MyString.c.o.provides
-
-CMakeFiles/ProjetTutore1.dir/dev/MyString.c.o.provides.build: CMakeFiles/ProjetTutore1.dir/dev/MyString.c.o
-
-
-CMakeFiles/ProjetTutore1.dir/dev/EncryptDecrypt.c.o: CMakeFiles/ProjetTutore1.dir/flags.make
-CMakeFiles/ProjetTutore1.dir/dev/EncryptDecrypt.c.o: ../dev/EncryptDecrypt.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/mrcraftcod/Dropbox/Documents/Univ/Polytech/DI3/S5/C/ProjetTutore1/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/ProjetTutore1.dir/dev/EncryptDecrypt.c.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/ProjetTutore1.dir/dev/EncryptDecrypt.c.o   -c /Users/mrcraftcod/Dropbox/Documents/Univ/Polytech/DI3/S5/C/ProjetTutore1/dev/EncryptDecrypt.c
-
-CMakeFiles/ProjetTutore1.dir/dev/EncryptDecrypt.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/ProjetTutore1.dir/dev/EncryptDecrypt.c.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/mrcraftcod/Dropbox/Documents/Univ/Polytech/DI3/S5/C/ProjetTutore1/dev/EncryptDecrypt.c > CMakeFiles/ProjetTutore1.dir/dev/EncryptDecrypt.c.i
-
-CMakeFiles/ProjetTutore1.dir/dev/EncryptDecrypt.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/ProjetTutore1.dir/dev/EncryptDecrypt.c.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/mrcraftcod/Dropbox/Documents/Univ/Polytech/DI3/S5/C/ProjetTutore1/dev/EncryptDecrypt.c -o CMakeFiles/ProjetTutore1.dir/dev/EncryptDecrypt.c.s
-
-CMakeFiles/ProjetTutore1.dir/dev/EncryptDecrypt.c.o.requires:
-
-.PHONY : CMakeFiles/ProjetTutore1.dir/dev/EncryptDecrypt.c.o.requires
-
-CMakeFiles/ProjetTutore1.dir/dev/EncryptDecrypt.c.o.provides: CMakeFiles/ProjetTutore1.dir/dev/EncryptDecrypt.c.o.requires
-	$(MAKE) -f CMakeFiles/ProjetTutore1.dir/build.make CMakeFiles/ProjetTutore1.dir/dev/EncryptDecrypt.c.o.provides.build
-.PHONY : CMakeFiles/ProjetTutore1.dir/dev/EncryptDecrypt.c.o.provides
-
-CMakeFiles/ProjetTutore1.dir/dev/EncryptDecrypt.c.o.provides.build: CMakeFiles/ProjetTutore1.dir/dev/EncryptDecrypt.c.o
-
-
-CMakeFiles/ProjetTutore1.dir/dev/DocumentUtil.c.o: CMakeFiles/ProjetTutore1.dir/flags.make
-CMakeFiles/ProjetTutore1.dir/dev/DocumentUtil.c.o: ../dev/DocumentUtil.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/mrcraftcod/Dropbox/Documents/Univ/Polytech/DI3/S5/C/ProjetTutore1/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/ProjetTutore1.dir/dev/DocumentUtil.c.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/ProjetTutore1.dir/dev/DocumentUtil.c.o   -c /Users/mrcraftcod/Dropbox/Documents/Univ/Polytech/DI3/S5/C/ProjetTutore1/dev/DocumentUtil.c
-
-CMakeFiles/ProjetTutore1.dir/dev/DocumentUtil.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/ProjetTutore1.dir/dev/DocumentUtil.c.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/mrcraftcod/Dropbox/Documents/Univ/Polytech/DI3/S5/C/ProjetTutore1/dev/DocumentUtil.c > CMakeFiles/ProjetTutore1.dir/dev/DocumentUtil.c.i
-
-CMakeFiles/ProjetTutore1.dir/dev/DocumentUtil.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/ProjetTutore1.dir/dev/DocumentUtil.c.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/mrcraftcod/Dropbox/Documents/Univ/Polytech/DI3/S5/C/ProjetTutore1/dev/DocumentUtil.c -o CMakeFiles/ProjetTutore1.dir/dev/DocumentUtil.c.s
-
-CMakeFiles/ProjetTutore1.dir/dev/DocumentUtil.c.o.requires:
-
-.PHONY : CMakeFiles/ProjetTutore1.dir/dev/DocumentUtil.c.o.requires
-
-CMakeFiles/ProjetTutore1.dir/dev/DocumentUtil.c.o.provides: CMakeFiles/ProjetTutore1.dir/dev/DocumentUtil.c.o.requires
-	$(MAKE) -f CMakeFiles/ProjetTutore1.dir/build.make CMakeFiles/ProjetTutore1.dir/dev/DocumentUtil.c.o.provides.build
-.PHONY : CMakeFiles/ProjetTutore1.dir/dev/DocumentUtil.c.o.provides
-
-CMakeFiles/ProjetTutore1.dir/dev/DocumentUtil.c.o.provides.build: CMakeFiles/ProjetTutore1.dir/dev/DocumentUtil.c.o
-
-
-CMakeFiles/ProjetTutore1.dir/dev/Operatortable.c.o: CMakeFiles/ProjetTutore1.dir/flags.make
-CMakeFiles/ProjetTutore1.dir/dev/Operatortable.c.o: ../dev/Operatortable.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/mrcraftcod/Dropbox/Documents/Univ/Polytech/DI3/S5/C/ProjetTutore1/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/ProjetTutore1.dir/dev/Operatortable.c.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/ProjetTutore1.dir/dev/Operatortable.c.o   -c /Users/mrcraftcod/Dropbox/Documents/Univ/Polytech/DI3/S5/C/ProjetTutore1/dev/Operatortable.c
-
-CMakeFiles/ProjetTutore1.dir/dev/Operatortable.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/ProjetTutore1.dir/dev/Operatortable.c.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/mrcraftcod/Dropbox/Documents/Univ/Polytech/DI3/S5/C/ProjetTutore1/dev/Operatortable.c > CMakeFiles/ProjetTutore1.dir/dev/Operatortable.c.i
-
-CMakeFiles/ProjetTutore1.dir/dev/Operatortable.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/ProjetTutore1.dir/dev/Operatortable.c.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/mrcraftcod/Dropbox/Documents/Univ/Polytech/DI3/S5/C/ProjetTutore1/dev/Operatortable.c -o CMakeFiles/ProjetTutore1.dir/dev/Operatortable.c.s
-
-CMakeFiles/ProjetTutore1.dir/dev/Operatortable.c.o.requires:
-
-.PHONY : CMakeFiles/ProjetTutore1.dir/dev/Operatortable.c.o.requires
-
-CMakeFiles/ProjetTutore1.dir/dev/Operatortable.c.o.provides: CMakeFiles/ProjetTutore1.dir/dev/Operatortable.c.o.requires
-	$(MAKE) -f CMakeFiles/ProjetTutore1.dir/build.make CMakeFiles/ProjetTutore1.dir/dev/Operatortable.c.o.provides.build
-.PHONY : CMakeFiles/ProjetTutore1.dir/dev/Operatortable.c.o.provides
-
-CMakeFiles/ProjetTutore1.dir/dev/Operatortable.c.o.provides.build: CMakeFiles/ProjetTutore1.dir/dev/Operatortable.c.o
-
-
 # Object files for target ProjetTutore1
 ProjetTutore1_OBJECTS = \
-"CMakeFiles/ProjetTutore1.dir/dev/mainTest.c.o" \
-"CMakeFiles/ProjetTutore1.dir/dev/MyString.c.o" \
-"CMakeFiles/ProjetTutore1.dir/dev/EncryptDecrypt.c.o" \
-"CMakeFiles/ProjetTutore1.dir/dev/DocumentUtil.c.o" \
-"CMakeFiles/ProjetTutore1.dir/dev/Operatortable.c.o"
+"CMakeFiles/ProjetTutore1.dir/dev/mainTest.c.o"
 
 # External object files for target ProjetTutore1
 ProjetTutore1_EXTERNAL_OBJECTS =
 
 ProjetTutore1: CMakeFiles/ProjetTutore1.dir/dev/mainTest.c.o
-ProjetTutore1: CMakeFiles/ProjetTutore1.dir/dev/MyString.c.o
-ProjetTutore1: CMakeFiles/ProjetTutore1.dir/dev/EncryptDecrypt.c.o
-ProjetTutore1: CMakeFiles/ProjetTutore1.dir/dev/DocumentUtil.c.o
-ProjetTutore1: CMakeFiles/ProjetTutore1.dir/dev/Operatortable.c.o
 ProjetTutore1: CMakeFiles/ProjetTutore1.dir/build.make
 ProjetTutore1: CMakeFiles/ProjetTutore1.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/mrcraftcod/Dropbox/Documents/Univ/Polytech/DI3/S5/C/ProjetTutore1/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking C executable ProjetTutore1"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/mrcraftcod/Dropbox/Documents/Univ/Polytech/DI3/S5/C/ProjetTutore1/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable ProjetTutore1"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/ProjetTutore1.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -204,10 +100,6 @@ CMakeFiles/ProjetTutore1.dir/build: ProjetTutore1
 .PHONY : CMakeFiles/ProjetTutore1.dir/build
 
 CMakeFiles/ProjetTutore1.dir/requires: CMakeFiles/ProjetTutore1.dir/dev/mainTest.c.o.requires
-CMakeFiles/ProjetTutore1.dir/requires: CMakeFiles/ProjetTutore1.dir/dev/MyString.c.o.requires
-CMakeFiles/ProjetTutore1.dir/requires: CMakeFiles/ProjetTutore1.dir/dev/EncryptDecrypt.c.o.requires
-CMakeFiles/ProjetTutore1.dir/requires: CMakeFiles/ProjetTutore1.dir/dev/DocumentUtil.c.o.requires
-CMakeFiles/ProjetTutore1.dir/requires: CMakeFiles/ProjetTutore1.dir/dev/Operatortable.c.o.requires
 
 .PHONY : CMakeFiles/ProjetTutore1.dir/requires
 

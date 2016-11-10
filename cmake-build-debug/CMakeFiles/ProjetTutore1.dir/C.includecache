@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/mrcraftcod/Dropbox/Documents/Univ/Polytech/DI3/S5/C/ProjetTutore1/dev/mainTest.c
+stdio.h
+-
+stdlib.h
+-
+
