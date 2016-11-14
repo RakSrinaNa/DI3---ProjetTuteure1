@@ -81,23 +81,46 @@ void IMPLEMENT(CustomerRecord_init)(CustomerRecord * record)
     }
 }
 
-void IMPLEMENT(CustomerRecord_finalize)(CustomerRecord * record)
+void IMPLEMENT(CustomerRecord_finalize)(CustomerRecord * UNUSED(record))
 {
-	record = record;
 }
 
 void IMPLEMENT(CustomerRecord_read)(CustomerRecord * record, FILE * file)
 {
-	fread(record->name, CUSTOMERRECORD_NAME_SIZE, 1, file);
-	fread(record->address, CUSTOMERRECORD_ADDRESS_SIZE, 1, file);
-	fread(record->postalCode, CUSTOMERRECORD_POSTALCODE_SIZE, 1, file);
-	fread(record->town, CUSTOMERRECORD_TOWN_SIZE, 1, file);
+	if(fread(record->name, CUSTOMERRECORD_NAME_SIZE, 1, file) != 1)
+	{
+		fatalError("Error read");
+	}
+	if(fread(record->address, CUSTOMERRECORD_ADDRESS_SIZE, 1, file) != 1)
+	{
+		fatalError("Error read");
+	}
+	if(fread(record->postalCode, CUSTOMERRECORD_POSTALCODE_SIZE, 1, file) != 1)
+	{
+		fatalError("Error read");
+	}
+	if(fread(record->town, CUSTOMERRECORD_TOWN_SIZE, 1, file) != 1)
+	{
+		fatalError("Error read");
+	}
 }
 
 void IMPLEMENT(CustomerRecord_write)(CustomerRecord * record, FILE * file)
 {
-	fwrite(record->name, CUSTOMERRECORD_NAME_SIZE, 1, file);
-	fwrite(record->address, CUSTOMERRECORD_ADDRESS_SIZE, 1, file);
-	fwrite(record->postalCode, CUSTOMERRECORD_POSTALCODE_SIZE, 1, file);
-	fwrite(record->town, CUSTOMERRECORD_TOWN_SIZE, 1, file);
+	if(fwrite(record->name, CUSTOMERRECORD_NAME_SIZE, 1, file) != 1)
+	{
+		fatalError("Error write");
+	}
+	if(fwrite(record->address, CUSTOMERRECORD_ADDRESS_SIZE, 1, file) != 1)
+	{
+		fatalError("Error write");
+	}
+	if(fwrite(record->postalCode, CUSTOMERRECORD_POSTALCODE_SIZE, 1, file) != 1)
+	{
+		fatalError("Error write");
+	}
+	if(fwrite(record->town, CUSTOMERRECORD_TOWN_SIZE, 1, file) != 1)
+	{
+		fatalError("Error write");
+	}
 }
