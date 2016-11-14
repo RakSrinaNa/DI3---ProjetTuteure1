@@ -104,7 +104,18 @@ char * IMPLEMENT(formatDate)(int day, int month, int year) {
  * @param file the file
  */
 void IMPLEMENT(writeString)(const char * str, FILE * file) {
-    provided_writeString(str,file);
+    /* TODO */
+    if(1)
+        return provided_writeString(str, file);
+    int i = -1;
+    do
+    {
+        i++;
+        if(fwrite(&str[i], sizeof(char), 1, file) != 1)
+        {
+    		fatalError("Error write");
+    	}
+    } while(str[i] != '\0');
 }
 
 /** Read a string from a binary file
@@ -113,5 +124,26 @@ void IMPLEMENT(writeString)(const char * str, FILE * file) {
  * @see writeString()
  */
 char * IMPLEMENT(readString)(FILE * file) {
-    return provided_readString(file);
+    /* TODO */
+    if(1)
+        return provided_readString(file);
+    unsigned int size;
+    char * stringRead = NULL;
+    char readChar;
+    do
+    {
+        char * tempRealloc;
+        if((tempRealloc = (char *) realloc(stringRead, size++ * sizeof(char))) == NULL)
+        {
+            fatalError("Error realloc");
+        }
+        stringRead = tempRealloc;
+
+        if(fread(&readChar, sizeof(char), 1, file) != 1)
+        {
+    		fatalError("Error read");
+    	}
+        stringRead[size - 1] = readChar;
+    } while(readChar != '\0');
+    return stringRead;
 }
