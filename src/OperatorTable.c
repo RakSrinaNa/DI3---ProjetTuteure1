@@ -106,19 +106,19 @@ void IMPLEMENT(OperatorTable_saveToFile)(OperatorTable * table, const char * fil
         char * encryptedPassword = duplicateString(OperatorTable_getPassword(table, indexSave)); /* Get the password */
 		encrypt(OperatorCryptKey, encryptedUser); /* Encrypt user */
 		encrypt(OperatorCryptKey, encryptedPassword); /* Encrypt password */
-		if(fputs(encryptedUser, operatorsFile) < 0) /* If writing the encrypted user worked */
+		if(fputs(encryptedUser, operatorsFile) < 0) /* If writing the encrypted user failed */
 		{
 			fatalError("Error writing in file!");
 		}
-		if(fputs("\n", operatorsFile) < 0) /* If writing the \n worked */
+		if(fputs("\n", operatorsFile) < 0) /* If writing the \n failed */
 		{
 			fatalError("Error writing in file!");
 		}
-		if(fputs(encryptedPassword, operatorsFile) < 0) /* If writing the encrypted password worked */
+		if(fputs(encryptedPassword, operatorsFile) < 0) /* If writing the encrypted password failed */
 		{
 			fatalError("Error writing in file!");
 		}
-		if(fputs("\n", operatorsFile) < 0) /* If writing the \n worked */
+		if(fputs("\n", operatorsFile) < 0) /* If writing the \n failed */
 		{
 			fatalError("Error writing in file!");
 		}
