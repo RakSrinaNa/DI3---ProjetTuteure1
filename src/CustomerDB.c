@@ -51,7 +51,10 @@ CustomerDB * IMPLEMENT(CustomerDB_open)(const char * filename) {
 		fatalError("Error malloc");
 	}
 	customerDB->file = recordsFile;
-    fread(&(customerDB->recordCount), sizeof(int), 1, recordsFile);
+    if(fread(&(customerDB->recordCount), sizeof(int), 1, recordsFile) != 1)
+    {
+        fatalError("Real error");
+    }
 	return customerDB;
 }
 
@@ -66,7 +69,10 @@ CustomerDB * IMPLEMENT(CustomerDB_openOrCreate)(const char * filename) {
 
 void IMPLEMENT(CustomerDB_close)(CustomerDB * customerDB) {
     fseek(customerDB->file, 0, SEEK_SET); /* Go at beginning of file */
-	fwrite(&(customerDB->recordCount), sizeof(int), 1, customerDB->file); /* Write the number of records */
+	if(fwrite(&(customerDB->recordCount), sizeof(int), 1, customerDB->file) != 1) /* Write the number of records */
+    {
+        fatalError("Write error");
+    }
 	fclose(customerDB->file);
 	free(customerDB);
 }
