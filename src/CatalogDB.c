@@ -60,7 +60,10 @@ CatalogDB * IMPLEMENT(CatalogDB_open)(const char * filename) {
 		fatalError("Error malloc");
 	}
 	catalogDB->file = recordsFile;
-    fread(&(catalogDB->recordCount), sizeof(int), 1, recordsFile);
+    if(fread(&(catalogDB->recordCount), sizeof(int), 1, recordsFile) != 1)
+    {
+        fatalError("Read error");
+    }
 	return catalogDB;
 }
 
@@ -82,7 +85,10 @@ CatalogDB * IMPLEMENT(CatalogDB_openOrCreate)(const char * filename) {
  */
 void IMPLEMENT(CatalogDB_close)(CatalogDB * catalogDB) {
     fseek(catalogDB->file, 0, SEEK_SET); /* Go at beginning of file */
-	fwrite(&(catalogDB->recordCount), sizeof(int), 1, catalogDB->file); /* Write the number of records */
+	if(fwrite(&(catalogDB->recordCount), sizeof(int), 1, catalogDB->file) != 1) /* Write the number of records */
+    {
+        fatalError("Read error");
+    }
 	fclose(catalogDB->file);
 	free(catalogDB);
 }
@@ -131,8 +137,8 @@ void IMPLEMENT(CatalogDB_appendRecord)(CatalogDB * catalogDB, CatalogRecord *rec
  */
 void IMPLEMENT(CatalogDB_insertRecord)(CatalogDB * catalogDB, int recordIndex, CatalogRecord * record) {
     CatalogRecord catalogRecord;
-    CatalogRecord_init(&catalogRecord);
     int i;
+    CatalogRecord_init(&catalogRecord);
     for(i = CatalogDB_getRecordCount(catalogDB) - 1; i >= recordIndex; i--) /* Shift evry record starting at out index */
     {
         CatalogDB_readRecord(catalogDB, i, &catalogRecord);
@@ -148,8 +154,8 @@ void IMPLEMENT(CatalogDB_insertRecord)(CatalogDB * catalogDB, int recordIndex, C
  */
 void IMPLEMENT(CatalogDB_removeRecord)(CatalogDB * catalogDB, int recordIndex) {
     CatalogRecord catalogRecord;
-    CatalogRecord_init(&catalogRecord);
     int i;
+    CatalogRecord_init(&catalogRecord);
     for(i = recordIndex + 1; i < CatalogDB_getRecordCount(catalogDB); i++) /* Shift evry record starting at out index */
     {
         CatalogDB_readRecord(catalogDB, i, &catalogRecord);
