@@ -26,7 +26,10 @@
  */
 void IMPLEMENT(PrintFormat_init)(PrintFormat * format)
 {
-  provided_PrintFormat_init(format);
+    format->name = duplicateString("");
+    format->header = duplicateString("");
+    format->row = duplicateString("");
+    format->footer = duplicateString("");
 }
 
 /** Finalize a print format
@@ -34,7 +37,10 @@ void IMPLEMENT(PrintFormat_init)(PrintFormat * format)
  */
 void IMPLEMENT(PrintFormat_finalize)(PrintFormat * format)
 {
-  provided_PrintFormat_finalize(format);
+    free(format->name);
+    free(format->header);
+    free(format->row);
+    free(format->footer);
 }
 
 /** Load a print format from a file
@@ -45,4 +51,3 @@ void IMPLEMENT(PrintFormat_loadFromFile)(PrintFormat * format, const char * file
 {
   provided_PrintFormat_loadFromFile(format, filename);
 }
-
