@@ -20,13 +20,21 @@
 #include <Document.h>
 #include <DocumentUtil.h>
 #include <DocumentRowList.h>
+#include <MyString.h>
 
 /** Initialize a document
  * @param document a pointer to a document
  * @warning An initialized document must be finalized by Document_finalize() to free all resources
  */
 void IMPLEMENT(Document_init)(Document * document) {
-    provided_Document_init(document);
+    CustomerRecord_init(&(document->customer));
+    document->editDate = duplicateString("");
+    document->expiryDate = duplicateString("");
+    document->docNumber = duplicateString("");
+    document->object = duplicateString("");
+    document->operator = duplicateString("");
+    document->rows = NULL;
+    document->typeDocument = QUOTATION;
 }
 
 /** Finalize a document
@@ -34,7 +42,16 @@ void IMPLEMENT(Document_init)(Document * document) {
  * @warning document must have been initialized
  */
 void IMPLEMENT(Document_finalize)(Document * document) {
-    provided_Document_finalize(document);
+    free(document->editDate);
+    free(document->expiryDate);
+    free(document->docNumber);
+    free(document->object);
+    free(document->operator);
+    if(document->rows != NULL)
+    {
+        DocumentRowList_finalize(&(document->rows));
+        document->rows = NULL;
+    }
 }
 
 /** Save the content of a document to a file
@@ -43,7 +60,34 @@ void IMPLEMENT(Document_finalize)(Document * document) {
  * @warning document must have been initialized
  */
 void IMPLEMENT(Document_saveToFile)(Document * document, const char * filename) {
-    provided_Document_saveToFile(document,filename);
+    FILE * file;
+    int typeDecomentID = (int) document->typeDocument;
+    int rowsCount = DocumentRowList_getRowCount(document->rows);
+    DocumentRow * currentRow = document->rows;
+    if((file = fopen(filename, "w+b")) == NULL)
+    {
+        fatalError("Error opening file");
+    }
+    CustomerRecord_write(&(document->customer), file);
+    writeString(document->editDate, file);
+    writeString(document->expiryDate, file);
+    writeString(document->docNumber, file);
+    writeString(document->object, file);
+    writeString(document->operator, file);
+    if(fwrite(&rowsCount, sizeof(int), 1, file) != 1)
+    {
+        fatalError("Write error");
+    }
+    while(currentRow != NULL)
+    {
+        DocumentRow_writeRow(currentRow, file);
+        currentRow = currentRow->next;
+    }
+    if(fwrite(&typeDecomentID, sizeof(int), 1, file) != 1)
+    {
+        fatalError("Write error");
+    }
+    fclose(file);
 }
 
 /** Load the content of a document from a file
@@ -52,6 +96,44 @@ void IMPLEMENT(Document_saveToFile)(Document * document, const char * filename) 
  * @warning document must have been initialized
  */
 void IMPLEMENT(Document_loadFromFile)(Document * document, const char * filename) {
-    provided_Document_loadFromFile(document,filename);
-}
+    int i;
+    FILE * file;
+    int typeDecomentID;
+    int rowsCount;
+    DocumentRow * currentRow;
+    if((file = fopen(filename, "rb")) == NULL)
+    {
+        fatalError("Error opening file");
+    }
+    Document_finalize(document);
+    CustomerRecord_read(&(document->customer), file);
+    document->editDate = readString(file);
+    document->expiryDate = readString(file);
+    document->docNumber = readString(file);
+    document->object = readString(file);
+    document->operator = readString(file);
+    if(fread(&rowsCount, sizeof(int), 1, file) != 1)
+    {
+        fatalError("Read error");
+    }
 
+    for(i = 0; i < rowsCount; i++)
+    {
+        if(i == 0)
+        {
+            currentRow = DocumentRow_readRow(file);
+            document->rows = currentRow;
+        }
+        else
+        {
+            currentRow->next = DocumentRow_readRow(file);
+            currentRow = currentRow->next;
+        }
+    }
+    if(fread(&typeDecomentID, sizeof(int), 1, file) != 1)
+    {
+        fatalError("Read error");
+    }
+    document->typeDocument = (TypeDocument) typeDecomentID;
+    fclose(file);
+}
