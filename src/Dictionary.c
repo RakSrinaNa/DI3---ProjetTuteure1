@@ -19,13 +19,21 @@
 
 #include <Dictionary.h>
 
+
 /** Create an empty dictionary on the heap
  * @return a new dictionary
  * @warning the dictionary should be destroyed using Dictionary_destroy()
  */
 Dictionary * IMPLEMENT(Dictionary_create)(void)
 {
-  return provided_Dictionary_create();
+    Dictionary * dictionary;
+    if((dictionary = (Dictionary *)malloc(sizeof(Dictionary))) == NULL)
+    {
+        fatalError("Malloc error");
+    }
+    dictionary->count = 0;
+    dictionary->entries = NULL;
+    return dictionary;
 }
 
 /** Destroy a dictionary
@@ -33,7 +41,18 @@ Dictionary * IMPLEMENT(Dictionary_create)(void)
  */
 void IMPLEMENT(Dictionary_destroy)(Dictionary * dictionary)
 {
-  provided_Dictionary_destroy(dictionary);
+    int i;
+    for(i = 0; i < dictionary->count; i++)
+    {
+        DictionaryEntry * dictionaryEntry = &(dictionary->entries[i]);
+        free(dictionaryEntry->name);
+        if(dictionaryEntry->type == STRING_ENTRY)
+        {
+            free(dictionaryEntry->value.stringValue);
+        }
+    }
+    free(dictionary->entries);
+    free(dictionary);
 }
 
 /** Get a pointer on the entry associated with the given entry name
@@ -43,7 +62,16 @@ void IMPLEMENT(Dictionary_destroy)(Dictionary * dictionary)
  */
 DictionaryEntry * IMPLEMENT(Dictionary_getEntry)(Dictionary * dictionary, const char * name)
 {
-  return provided_Dictionary_getEntry(dictionary, name);
+    int i;
+    for(i = 0; i < dictionary->count; i++)
+    {
+        DictionaryEntry * dictionaryEntry = &(dictionary->entries[i]);
+        if(icaseCompareString(name, dictionaryEntry->name) == 0)
+        {
+            return dictionaryEntry;
+        }
+    }
+    return NULL;
 }
 
 /** Define or change a dictionary entry as a string
@@ -53,7 +81,25 @@ DictionaryEntry * IMPLEMENT(Dictionary_getEntry)(Dictionary * dictionary, const 
  */
 void IMPLEMENT(Dictionary_setStringEntry)(Dictionary * dictionary, const char * name, const char * value)
 {
-  provided_Dictionary_setStringEntry(dictionary, name, value);
+    DictionaryEntry * dictionaryEntry = Dictionary_getEntry(dictionary, name);
+    if(dictionaryEntry == NULL)
+    {
+        DictionaryEntry * newEntries;
+        dictionary->count++;
+        if((newEntries = (DictionaryEntry *)realloc(dictionary->entries, (long unsigned int)dictionary->count * sizeof(DictionaryEntry))) == NULL)
+        {
+            fatalError("Realloc error");
+        }
+        dictionary->entries = newEntries;
+        dictionaryEntry = (dictionary->entries) + dictionary->count - 1;
+        dictionaryEntry->name = duplicateString(name);
+    }
+    else if(dictionaryEntry->type == STRING_ENTRY)
+    {
+        free(dictionaryEntry->value.stringValue);
+    }
+    dictionaryEntry->type = STRING_ENTRY;
+    dictionaryEntry->value.stringValue = duplicateString(value);
 }
 
 /** Define or change a dictionary entry as a number
@@ -63,7 +109,25 @@ void IMPLEMENT(Dictionary_setStringEntry)(Dictionary * dictionary, const char * 
  */
 void IMPLEMENT(Dictionary_setNumberEntry)(Dictionary * dictionary, const char * name, double value)
 {
-  provided_Dictionary_setNumberEntry(dictionary, name, value);
+    DictionaryEntry * dictionaryEntry = Dictionary_getEntry(dictionary, name);
+    if(dictionaryEntry == NULL)
+    {
+        DictionaryEntry * newEntries;
+        dictionary->count++;
+        if((newEntries = (DictionaryEntry *)realloc(dictionary->entries, (long unsigned int)dictionary->count * sizeof(DictionaryEntry))) == NULL)
+        {
+            fatalError("Realloc error");
+        }
+        dictionary->entries = newEntries;
+        dictionaryEntry = (dictionary->entries) + dictionary->count - 1;
+        dictionaryEntry->name = duplicateString(name);
+    }
+    else if(dictionaryEntry->type == STRING_ENTRY)
+    {
+        free(dictionaryEntry->value.stringValue);
+    }
+    dictionaryEntry->type = NUMBER_ENTRY;
+    dictionaryEntry->value.numberValue = value;
 }
 
 /** Create a new string on the heap which is the result of the formatting of format according to the dictionary content
