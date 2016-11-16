@@ -281,21 +281,21 @@ void IMPLEMENT(CatalogRecord_read)(CatalogRecord * record, FILE * file)
  */
 void IMPLEMENT(CatalogRecord_write)(CatalogRecord * record, FILE * file)
 {
-    char codeRead[CATALOGRECORD_CODE_SIZE] = {0};
-    char designationRead[CATALOGRECORD_DESIGNATION_SIZE] = {0};
-    char unityRead[CATALOGRECORD_UNITY_SIZE] = {0};
-    copyStringWithLength(codeRead, record->code, CATALOGRECORD_CODE_SIZE);
-    copyStringWithLength(designationRead, record->designation, CATALOGRECORD_DESIGNATION_SIZE);
-    copyStringWithLength(unityRead, record->unity, CATALOGRECORD_UNITY_SIZE);
-    if(fwrite(record->code, CATALOGRECORD_CODE_SIZE, 1, file) != 1)
+    char codeWrite[CATALOGRECORD_CODE_SIZE] = {0};
+    char designationWrite[CATALOGRECORD_DESIGNATION_SIZE] = {0};
+    char unityWrite[CATALOGRECORD_UNITY_SIZE] = {0};
+    copyStringWithLength(codeWrite, record->code, CATALOGRECORD_CODE_SIZE);
+    copyStringWithLength(designationWrite, record->designation, CATALOGRECORD_DESIGNATION_SIZE);
+    copyStringWithLength(unityWrite, record->unity, CATALOGRECORD_UNITY_SIZE);
+    if(fwrite(codeWrite, CATALOGRECORD_CODE_SIZE, 1, file) != 1)
     {
         fatalError("Write error");
     }
-    if(fwrite(record->designation, CATALOGRECORD_DESIGNATION_SIZE, 1, file) != 1)
+    if(fwrite(designationWrite, CATALOGRECORD_DESIGNATION_SIZE, 1, file) != 1)
     {
         fatalError("Write error");
     }
-    if(fwrite(record->unity, CATALOGRECORD_UNITY_SIZE, 1, file) != 1)
+    if(fwrite(unityWrite, CATALOGRECORD_UNITY_SIZE, 1, file) != 1)
     {
         fatalError("Write error");
     }
