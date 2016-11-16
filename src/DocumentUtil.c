@@ -104,18 +104,15 @@ char * IMPLEMENT(formatDate)(int day, int month, int year) {
  * @param file the file
  */
 void IMPLEMENT(writeString)(const char * str, FILE * file) {
-    /* TODO */
-    if(1)
-        return provided_writeString(str, file);
-    int i = -1;
-    do
+    size_t strLength = stringLength(str) + 1U;
+    if(fwrite(&strLength, sizeof(size_t), 1, file) != 1)
     {
-        i++;
-        if(fwrite(&str[i], sizeof(char), 1, file) != 1)
-        {
-    		fatalError("Error write");
-    	}
-    } while(str[i] != '\0');
+        fatalError("Error write");
+    }
+    if(fwrite(str, strLength, 1, file) != 1)
+    {
+        fatalError("Error write");
+    }
 }
 
 /** Read a string from a binary file
@@ -124,26 +121,19 @@ void IMPLEMENT(writeString)(const char * str, FILE * file) {
  * @see writeString()
  */
 char * IMPLEMENT(readString)(FILE * file) {
-    /* TODO */
-    if(1)
-        return provided_readString(file);
-    unsigned int size;
-    char * stringRead = NULL;
-    char readChar;
-    do
+    char * str;
+    size_t strLength = 0;
+    if(fread(&strLength, sizeof(size_t), 1, file) != 1)
     {
-        char * tempRealloc;
-        if((tempRealloc = (char *) realloc(stringRead, size++ * sizeof(char))) == NULL)
-        {
-            fatalError("Error realloc");
-        }
-        stringRead = tempRealloc;
-
-        if(fread(&readChar, sizeof(char), 1, file) != 1)
-        {
-    		fatalError("Error read");
-    	}
-        stringRead[size - 1] = readChar;
-    } while(readChar != '\0');
-    return stringRead;
+        fatalError("Read error");
+    }
+    if((str = (char *) malloc(strLength * sizeof(char))) == NULL)
+    {
+        fatalError("Malloc error");
+    }
+    if(fread(str, strLength, 1, file) != 1)
+    {
+        fatalError("Read error");
+    }
+    return str;
 }

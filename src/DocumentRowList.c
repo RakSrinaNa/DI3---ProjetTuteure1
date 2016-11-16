@@ -82,7 +82,7 @@ void IMPLEMENT(DocumentRowList_finalize)(DocumentRow ** list) {
     while(*list != NULL)
     {
         DocumentRow * nextElement = (*list)->next;
-        free(*list);
+        DocumentRow_destroy(*list);
         *list = nextElement;
     }
 }
@@ -130,7 +130,12 @@ void IMPLEMENT(DocumentRowList_pushBack)(DocumentRow ** list, DocumentRow * row)
     }
     else
     {
-        DocumentRowList_insertAfter(list, DocumentRowList_get(*list, DocumentRowList_getRowCount(*list) - 1), row);
+        DocumentRow * element = *list;
+        while(element->next != NULL)
+        {
+            element = element->next;
+        }
+        element->next = row;
     }
 }
 
@@ -140,25 +145,22 @@ void IMPLEMENT(DocumentRowList_pushBack)(DocumentRow ** list, DocumentRow * row)
  * @param row the row to insert
  */
 void IMPLEMENT(DocumentRowList_insertBefore)(DocumentRow ** list, DocumentRow * position, DocumentRow * row) {
-    DocumentRow * beforeElement = NULL;
-    DocumentRow * currentElement = *list;
-    while(currentElement != NULL && currentElement != position)
+    DocumentRow * beforeElement = *list;
+    row->next = position;
+    if(beforeElement == position)
     {
-        beforeElement = currentElement;
-        currentElement = currentElement->next;
-    }
-    if(currentElement == NULL)
-    {
-        fatalError("The position isn't in the list");
-    }
-    if(beforeElement == NULL)
-    {
-        row->next = *list;
         *list = row;
     }
     else
     {
-        row->next = beforeElement->next;
+        while(beforeElement->next != position && beforeElement->next != NULL)
+        {
+            beforeElement = beforeElement->next;
+        }
+        if(beforeElement->next == NULL)
+        {
+            fatalError("The position isn't in the list");
+        }
         beforeElement->next = row;
     }
 }
@@ -168,18 +170,9 @@ void IMPLEMENT(DocumentRowList_insertBefore)(DocumentRow ** list, DocumentRow * 
  * @param position a pointer on the positioning row
  * @param row the row to insert
  */
-void IMPLEMENT(DocumentRowList_insertAfter)(DocumentRow ** list, DocumentRow * position, DocumentRow * row) {
-    DocumentRow * currentElement = *list;
-    while(currentElement != NULL && currentElement != position)
-    {
-        currentElement = currentElement->next;
-    }
-    if(currentElement == NULL)
-    {
-        fatalError("The position isn't in the list");
-    }
-    row->next = currentElement->next;
-    currentElement->next = row;
+void IMPLEMENT(DocumentRowList_insertAfter)(DocumentRow ** UNUSED(list), DocumentRow * position, DocumentRow * row) {
+    row->next = position->next;
+    position->next = row;
 }
 
 /** Remove a row from the list
@@ -187,25 +180,24 @@ void IMPLEMENT(DocumentRowList_insertAfter)(DocumentRow ** list, DocumentRow * p
  * @param position the row to remove
  */
 void IMPLEMENT(DocumentRowList_removeRow)(DocumentRow ** list, DocumentRow * position) {
-    DocumentRow * beforeElement = NULL;
-    DocumentRow * currentElement = *list;
-    while(currentElement != NULL && currentElement != position)
+    DocumentRow * beforeElement = *list;
+    if(beforeElement == position)
     {
-        beforeElement = currentElement;
-        currentElement = currentElement->next;
-    }
-    if(currentElement == NULL)
-    {
-        fatalError("The position isn't in the list");
-    }
-    if(beforeElement == NULL)
-    {
-        *list = currentElement->next;
+        *list = position->next;
     }
     else
     {
-        beforeElement->next = currentElement->next;
+        while(beforeElement->next != position && beforeElement->next != NULL)
+        {
+            beforeElement = beforeElement->next;
+        }
+        if(beforeElement->next == NULL)
+        {
+            fatalError("The position isn't in the list");
+        }
+        beforeElement->next = position->next;
     }
+    DocumentRow_destroy(position);
 }
 
 /** Write a row in a binary file
@@ -213,27 +205,13 @@ void IMPLEMENT(DocumentRowList_removeRow)(DocumentRow ** list, DocumentRow * pos
  * @param file the opened file
  */
 void IMPLEMENT(DocumentRow_writeRow)(DocumentRow * row, FILE * file) {
-    if(1) /* TODO */
-    {
-        provided_DocumentRow_writeRow(row, file);
-        return;
-    }
-    if(fwrite(row->code, stringLength(row->code) + 1U, 1, file) != 1)
-    {
-        fatalError("Error write");
-    }
-    if(fwrite(row->designation, stringLength(row->designation) + 1U, 1, file) != 1)
-    {
-        fatalError("Error write");
-    }
+    writeString(row->code, file);
+    writeString(row->designation, file);
     if(fwrite(&(row->quantity), sizeof(double), 1, file) != 1)
     {
         fatalError("Error write");
     }
-    if(fwrite(row->unity, stringLength(row->unity) + 1U, 1, file) != 1)
-    {
-        fatalError("Error write");
-    }
+    writeString(row->unity, file);
     if(fwrite(&(row->basePrice), sizeof(double), 1, file) != 1)
     {
         fatalError("Error write");
@@ -257,25 +235,15 @@ void IMPLEMENT(DocumentRow_writeRow)(DocumentRow * row, FILE * file) {
  * @return a new row created on the heap filled with the data
  */
 DocumentRow * IMPLEMENT(DocumentRow_readRow)(FILE * file) {
-    if(1) /* TODO */
-        return provided_DocumentRow_readRow(file);
     DocumentRow * row = DocumentRow_create();
-    if(fscanf(file, "%s", row->code) != 1)
-    {
-        fatalError("Error read");
-    }
-    if(fscanf(file, "%s", row->designation) != 1)
-    {
-        fatalError("Error read");
-    }
+    DocumentRow_finalize(row);
+    row->code = readString(file);
+    row->designation = readString(file);
     if(fread(&(row->quantity), sizeof(double), 1, file) != 1)
     {
         fatalError("Error read");
     }
-    if(fscanf(file, "%s", row->unity) != 1)
-    {
-        fatalError("Error read");
-    }
+    row->unity = readString(file);
     if(fread(&(row->basePrice), sizeof(double), 1, file) != 1)
     {
         fatalError("Error read");
