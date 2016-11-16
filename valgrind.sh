@@ -1,1 +1,1 @@
-VALGRIND="disable-gui" sudo make valgrind-debug
+sudo VALGRIND="disable-gui" make valgrind-debug
