@@ -138,5 +138,5 @@ void IMPLEMENT(Dictionary_setNumberEntry)(Dictionary * dictionary, const char * 
  */
 char * IMPLEMENT(Dictionary_format)(Dictionary * dictionary, const char * format)
 {
-  return provided_Dictionary_format(dictionary, format);
+    return provided_Dictionary_format(dictionary, format);
 }
