@@ -40,6 +40,8 @@
 
 #define ASSERT_EQUAL_STRING( x, y ) ASSERT( (strcmp((x),(y)) == 0) )
 
+#define ASSERT_NOT_EQUAL_STRING( x, y ) ASSERT( (strcmp((x),(y)) != 0) )
+
 #define ASSERT_EQUAL_DOUBLE( x, y ) ASSERT( fabs(x-y) < 0.0001 )
 
 #define BEGIN_TESTS( package ) const char * packageName = # package; if (packageTestsEnabled(# package, "disable-unit-" # package))

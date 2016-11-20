@@ -30,11 +30,11 @@
 /** The size of the name field */
 #define CUSTOMERRECORD_NAME_SIZE 70UL
 /** The size of the address field */
-#define CUSTOMERRECORD_ADDRESS_SIZE 130UL
+#define CUSTOMERRECORD_ADDRESS_SIZE 129UL
 /** The size of the postalCode field */
 #define CUSTOMERRECORD_POSTALCODE_SIZE 20UL
 /** The size of the town field */
-#define CUSTOMERRECORD_TOWN_SIZE 90UL
+#define CUSTOMERRECORD_TOWN_SIZE 89UL
 
 /** A customer record */
 typedef struct

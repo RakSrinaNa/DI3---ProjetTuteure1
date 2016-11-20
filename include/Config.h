@@ -130,9 +130,21 @@ int snprintf(char *str, size_t size, const char *format, ...);
 #define index indexOfChar
 /* Replace the standard strstr() function with our function */
 #define strstr indexOfString
+/* Replace goto */
+#define goto YouGotABigO
 
 #include <MyString.h>
 #include <Registry.h>
+
+/* Generate a warning if the result is not used */
+extern FILE *fopen(const char *path, const char *mode) __attribute__((warn_unused_result));
+extern size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream) __attribute__((warn_unused_result));
+extern size_t fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream) __attribute__((warn_unused_result));
+extern void *malloc(size_t size) __attribute__((warn_unused_result));
+extern void *calloc(size_t nmemb, size_t size) __attribute__((warn_unused_result));
+extern void *realloc(void *ptr, size_t size) __attribute__((warn_unused_result));
+extern char *fgets(char *s, int size, FILE *stream) __attribute__((warn_unused_result));
+
 
 /** Test if name is specified as one of the command line parameters.
  * @return true if specified, false otherwise

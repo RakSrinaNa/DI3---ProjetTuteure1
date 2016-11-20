@@ -116,6 +116,7 @@ static void test_CatalogRecord_readWrite(void)
 {
   FILE * file;
   CatalogRecord record;
+  long fileSize;
 
   CatalogRecord_init(&record);
 
@@ -138,7 +139,55 @@ static void test_CatalogRecord_readWrite(void)
 
   /* ftell is bugged on WIN32 platform so skip the test */
 #ifndef _WIN32
-  ASSERT_EQUAL(ftell(file), CATALOGRECORD_SIZE * 3);
+  fileSize = ftell(file);
+  ASSERT_EQUAL(fileSize, CATALOGRECORD_SIZE * 3);
+#endif
+
+  fclose(file);
+
+  CatalogRecord_finalize(&record);
+}
+
+static void test_CatalogRecord_readWrite2(void)
+{
+  FILE * file;
+  CatalogRecord record;
+  long fileSize;
+  char codePattern[CATALOGRECORD_CODE_SIZE];
+  char designationPattern[CATALOGRECORD_DESIGNATION_SIZE];
+  char unityPattern[CATALOGRECORD_UNITY_SIZE];
+
+  memset(codePattern, 'a', CATALOGRECORD_CODE_SIZE);
+  memset(designationPattern, 'b', CATALOGRECORD_DESIGNATION_SIZE);
+  memset(unityPattern, 'c', CATALOGRECORD_UNITY_SIZE);
+  codePattern[CATALOGRECORD_CODE_SIZE-1] = '\0';
+  designationPattern[CATALOGRECORD_DESIGNATION_SIZE-1] = '\0';
+  unityPattern[CATALOGRECORD_UNITY_SIZE-1] = '\0';
+
+
+  CatalogRecord_init(&record);
+
+  file = fopen(BASEPATH "/unittest/catalogrecord-unittest.db", "wb");
+  setValues(&record, codePattern, designationPattern, unityPattern, 1.1, 2.2, 3.3);
+  CatalogRecord_write(&record, file);
+  setValues(&record, codePattern, designationPattern, unityPattern, 2.1, 3.2, 4.3);
+  CatalogRecord_write(&record, file);
+  setValues(&record, codePattern, designationPattern, unityPattern, 3.1, 4.2, 5.3);
+  CatalogRecord_write(&record, file);
+  fclose(file);
+
+  file = fopen(BASEPATH "/unittest/catalogrecord-unittest.db", "rb");
+  CatalogRecord_read(&record, file);
+  testValues(&record, codePattern, designationPattern, unityPattern, 1.1, 2.2, 3.3);
+  CatalogRecord_read(&record, file);
+  testValues(&record, codePattern, designationPattern, unityPattern, 2.1, 3.2, 4.3);
+  CatalogRecord_read(&record, file);
+  testValues(&record, codePattern, designationPattern, unityPattern, 3.1, 4.2, 5.3);
+
+  /* ftell is bugged on WIN32 platform so skip the test */
+#ifndef _WIN32
+  fileSize = ftell(file);
+  ASSERT_EQUAL(fileSize, CATALOGRECORD_SIZE * 3);
 #endif
 
   fclose(file);
@@ -152,6 +201,7 @@ void test_CatalogRecord(void)
   {
     RUN_TEST(test_CatalogRecord_accessors);
     RUN_TEST(test_CatalogRecord_readWrite);
+    RUN_TEST(test_CatalogRecord_readWrite2);
   }
   END_TESTS
 }

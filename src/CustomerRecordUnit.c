@@ -117,12 +117,55 @@ static void test_CustomerRecord_readWrite(void)
   CustomerRecord_finalize(&record);
 }
 
+static void test_CustomerRecord_readWrite2(void)
+{
+  FILE * file;
+  char namePattern[CUSTOMERRECORD_NAME_SIZE];
+  char addressPattern[CUSTOMERRECORD_ADDRESS_SIZE];
+  char postalcodePattern[CUSTOMERRECORD_POSTALCODE_SIZE];
+  char townPattern[CUSTOMERRECORD_TOWN_SIZE];
+
+  memset(namePattern, 'a', CUSTOMERRECORD_NAME_SIZE);
+  memset(addressPattern, 'b', CUSTOMERRECORD_ADDRESS_SIZE);
+  memset(postalcodePattern, 'c', CUSTOMERRECORD_POSTALCODE_SIZE);
+  memset(townPattern, 'd', CUSTOMERRECORD_TOWN_SIZE);
+  namePattern[CUSTOMERRECORD_NAME_SIZE-1] = '\0';
+  addressPattern[CUSTOMERRECORD_ADDRESS_SIZE-1] = '\0';
+  postalcodePattern[CUSTOMERRECORD_POSTALCODE_SIZE-1] = '\0';
+  townPattern[CUSTOMERRECORD_TOWN_SIZE-1] = '\0';
+
+  CustomerRecord record;
+
+  CustomerRecord_init(&record);
+
+  file = fopen(BASEPATH "/unittest/catalogrecord-unittest.db", "w+b");
+  setValues(&record, namePattern, addressPattern, postalcodePattern, townPattern);
+  CustomerRecord_write(&record, file);
+  CustomerRecord_write(&record, file);
+  CustomerRecord_write(&record, file);
+
+  fseek(file, 0, SEEK_SET);
+  CustomerRecord_read(&record, file);
+  testValues(&record, namePattern, addressPattern, postalcodePattern, townPattern);
+  CustomerRecord_read(&record, file);
+  testValues(&record, namePattern, addressPattern, postalcodePattern, townPattern);
+  CustomerRecord_read(&record, file);
+  testValues(&record, namePattern, addressPattern, postalcodePattern, townPattern);
+
+  ASSERT_EQUAL(ftell(file), CUSTOMERRECORD_SIZE * 3);
+
+  fclose(file);
+
+  CustomerRecord_finalize(&record);
+}
+
 void test_CustomerRecord(void)
 {
   BEGIN_TESTS(CustomerRecord)
   {
     RUN_TEST(test_CustomerRecord_accessors);
     RUN_TEST(test_CustomerRecord_readWrite);
+    RUN_TEST(test_CustomerRecord_readWrite2);
   }
   END_TESTS
 }

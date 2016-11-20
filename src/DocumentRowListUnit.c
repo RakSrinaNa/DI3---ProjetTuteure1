@@ -22,6 +22,39 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
+/* function pointers to save old values*/
+static DocumentRow * (*forward_DocumentRowList_get)(DocumentRow * list, int rowIndex);
+static int (*forward_DocumentRowList_getRowCount)(DocumentRow * list);
+
+/* the call counters */
+static unsigned int counter_DocumentRowList_get = 0U;
+static unsigned int counter_DocumentRowList_getRowCount = 0U;
+
+/* the hook functions which increment the counter and call the original function */
+static DocumentRow * hook_DocumentRowList_get(DocumentRow * list, int rowIndex) {
+    counter_DocumentRowList_get++;
+    return forward_DocumentRowList_get(list,rowIndex);
+}
+static int hook_DocumentRowList_getRowCount(DocumentRow * list) {
+    counter_DocumentRowList_getRowCount++;
+    return forward_DocumentRowList_getRowCount(list);
+}
+
+static void enableHooks(void) {
+    forward_DocumentRowList_get = DocumentRowList_get;
+    forward_DocumentRowList_getRowCount = DocumentRowList_getRowCount;
+    DocumentRowList_get = hook_DocumentRowList_get;
+    DocumentRowList_getRowCount = hook_DocumentRowList_getRowCount;
+    counter_DocumentRowList_get = 0U;
+    counter_DocumentRowList_getRowCount = 0U;
+}
+
+static void disableHooks(void) {
+    DocumentRowList_get = forward_DocumentRowList_get;
+    DocumentRowList_getRowCount = forward_DocumentRowList_getRowCount;
+}
+
+
 static void test_DocumentRowList_init(void)
 {
   DocumentRow row;
@@ -166,6 +199,97 @@ static void test_DocumentRowList_generic(void)
   DocumentRowList_finalize(&list);
 }
 
+static void test_DocumentRowList_logic(void)
+{
+  DocumentRow * list;
+  DocumentRow * row;
+
+  enableHooks();
+
+  DocumentRowList_init(&list);
+  row = DocumentRow_create();
+  row->basePrice = 1;
+  DocumentRowList_pushBack(&list, row);
+  row = DocumentRow_create();
+  row->basePrice = 2;
+  DocumentRowList_pushBack(&list, row);
+  row = DocumentRow_create();
+  row->basePrice = 3;
+  DocumentRowList_pushBack(&list, row);
+
+  /* get and getRowCount must not be called by the functions since it is inefficient */
+  ASSERT_EQUAL(0, counter_DocumentRowList_get);
+  ASSERT_EQUAL(0, counter_DocumentRowList_getRowCount);
+
+  row = DocumentRow_create();
+  row->basePrice = -1;
+  DocumentRowList_insertBefore(&list, DocumentRowList_get(list, 0), row);
+
+  /* get and getRowCount must not be called by the functions since it is inefficient */
+  ASSERT_EQUAL(1, counter_DocumentRowList_get);
+  ASSERT_EQUAL(0, counter_DocumentRowList_getRowCount);
+
+  row = DocumentRow_create();
+  row->basePrice = 1.5;
+  DocumentRowList_insertBefore(&list, DocumentRowList_get(list, 2), row);
+
+  /* get and getRowCount must not be called by the functions since it is inefficient */
+  ASSERT_EQUAL(2, counter_DocumentRowList_get);
+  ASSERT_EQUAL(0, counter_DocumentRowList_getRowCount);
+
+  row = DocumentRow_create();
+  row->basePrice = 2.5;
+  DocumentRowList_insertAfter(&list, DocumentRowList_get(list, 3), row);
+
+  /* get and getRowCount must not be called by the functions since it is inefficient */
+  ASSERT_EQUAL(3, counter_DocumentRowList_get);
+  ASSERT_EQUAL(0, counter_DocumentRowList_getRowCount);
+
+
+  row = DocumentRow_create();
+  row->basePrice = 3.5;
+  DocumentRowList_insertAfter(&list, DocumentRowList_get(list, 5), row);
+
+  /* get and getRowCount must not be called by the functions since it is inefficient */
+  ASSERT_EQUAL(4, counter_DocumentRowList_get);
+  ASSERT_EQUAL(0, counter_DocumentRowList_getRowCount);
+
+
+  DocumentRowList_removeRow(&list, DocumentRowList_get(list, 6));
+
+  /* get and getRowCount must not be called by the functions since it is inefficient */
+  ASSERT_EQUAL(5, counter_DocumentRowList_get);
+  ASSERT_EQUAL(0, counter_DocumentRowList_getRowCount);
+
+
+  DocumentRowList_removeRow(&list, DocumentRowList_get(list, 3));
+
+  /* get and getRowCount must not be called by the functions since it is inefficient */
+  ASSERT_EQUAL(6, counter_DocumentRowList_get);
+  ASSERT_EQUAL(0, counter_DocumentRowList_getRowCount);
+
+
+  DocumentRowList_removeRow(&list, DocumentRowList_get(list, 0));
+
+  /* get and getRowCount must not be called by the functions since it is inefficient */
+  ASSERT_EQUAL(7, counter_DocumentRowList_get);
+  ASSERT_EQUAL(0, counter_DocumentRowList_getRowCount);
+
+  ASSERT_EQUAL(DocumentRowList_getRowCount(list), 4);
+
+  /* get must not be called by the function since it is inefficient */
+  ASSERT_EQUAL(7, counter_DocumentRowList_get);
+  ASSERT_EQUAL(1, counter_DocumentRowList_getRowCount);
+
+  DocumentRowList_finalize(&list);
+
+  /* get and getRowCount must not be called by the functions since it is inefficient */
+  ASSERT_EQUAL(7, counter_DocumentRowList_get);
+  ASSERT_EQUAL(1, counter_DocumentRowList_getRowCount);
+
+  disableHooks();
+}
+
 void test_DocumentRowList(void)
 {
   BEGIN_TESTS(DocumentRowList)
@@ -174,6 +298,7 @@ void test_DocumentRowList(void)
     RUN_TEST(test_DocumentRowList_create);
     RUN_TEST(test_DocumentRowList_readAndWriteRow);
     RUN_TEST(test_DocumentRowList_generic);
+    RUN_TEST(test_DocumentRowList_logic);
   }
   END_TESTS
 }

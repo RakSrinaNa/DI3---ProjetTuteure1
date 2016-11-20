@@ -61,7 +61,7 @@ void IMPLEMENT(Document_finalize)(Document * document) {
  */
 void IMPLEMENT(Document_saveToFile)(Document * document, const char * filename) {
     FILE * file;
-    int typeDecomentID = (int) document->typeDocument;
+    int typeDocumentID = (int) document->typeDocument;
     int rowsCount = DocumentRowList_getRowCount(document->rows);
     DocumentRow * currentRow = document->rows;
     if((file = fopen(filename, "w+b")) == NULL)
@@ -83,7 +83,7 @@ void IMPLEMENT(Document_saveToFile)(Document * document, const char * filename) 
         DocumentRow_writeRow(currentRow, file);
         currentRow = currentRow->next;
     }
-    if(fwrite(&typeDecomentID, sizeof(int), 1, file) != 1)
+    if(fwrite(&typeDocumentID, sizeof(int), 1, file) != 1)
     {
         fatalError("Write error");
     }
@@ -98,7 +98,7 @@ void IMPLEMENT(Document_saveToFile)(Document * document, const char * filename) 
 void IMPLEMENT(Document_loadFromFile)(Document * document, const char * filename) {
     int i;
     FILE * file;
-    int typeDecomentID;
+    int typeDocumentID;
     int rowsCount;
     DocumentRow * currentRow;
     if((file = fopen(filename, "rb")) == NULL)
@@ -130,10 +130,10 @@ void IMPLEMENT(Document_loadFromFile)(Document * document, const char * filename
             currentRow = currentRow->next;
         }
     }
-    if(fread(&typeDecomentID, sizeof(int), 1, file) != 1)
+    if(fread(&typeDocumentID, sizeof(int), 1, file) != 1)
     {
         fatalError("Read error");
     }
-    document->typeDocument = (TypeDocument) typeDecomentID;
+    document->typeDocument = (TypeDocument) typeDocumentID;
     fclose(file);
 }

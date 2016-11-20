@@ -70,3 +70,24 @@
    ...
    obj:/usr/lib/x86_64-linux-gnu/*
 }
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   ...
+   fun:draw_box
+   ...
+   fun:gtk_widget_event_internal
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Param
+   writev(vector[...])
+   ...
+   fun:gdk_window_process_all_updates
+   fun:gtk_container_idle_sizer
+   fun:gdk_threads_dispatch
+   fun:g_main_context_dispatch
+   obj:*
+}

@@ -94,6 +94,10 @@ void IMPLEMENT(DocumentRowList_finalize)(DocumentRow ** list) {
  */
 DocumentRow * IMPLEMENT(DocumentRowList_get)(DocumentRow * list, int rowIndex) {
     int i;
+    if(rowIndex < 0)
+    {
+        return NULL;
+    }
     for(i = 0; i < rowIndex; i++)
     {
         if(list == NULL)

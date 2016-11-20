@@ -51,7 +51,7 @@ typedef struct
 /** The size in bytes of the code field of a CatalogRecord */
 #define CATALOGRECORD_CODE_SIZE 16UL
 /** The size in bytes of the designation field of a CatalogRecord */
-#define CATALOGRECORD_DESIGNATION_SIZE 128UL
+#define CATALOGRECORD_DESIGNATION_SIZE 127UL
 /** The size in bytes of the unity field of a CatalogRecord */
 #define CATALOGRECORD_UNITY_SIZE 20UL
 /** The size in bytes of the basePrice field of a CatalogRecord */

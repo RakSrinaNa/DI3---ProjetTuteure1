@@ -51,4 +51,11 @@ void Registry_dumpUsage(void);
 /** Initialize the registry */
 void Registry_init(void);
 
+/** Get the usage counter of the function
+* @internal
+* @param name the name of the function
+* @return the usage counter
+*/
+long int Registry_getUsage(const char * name);
+
 #endif

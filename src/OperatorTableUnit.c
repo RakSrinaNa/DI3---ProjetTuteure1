@@ -21,6 +21,7 @@
 #include <UnitTest.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <EncryptDecrypt.h>
 
 static void test_OperatorTable_createAndDestroy(void)
 {
@@ -180,6 +181,55 @@ static void test_OperatorTable_loadAndSave(void)
   OperatorTable_destroy(table2);
 }
 
+static void test_OperatorTable_loadAndSave2(void)
+{
+  const char * oldKey;
+  char newKey[10] = {0};
+  int i;
+
+  OperatorTable * table1;
+  OperatorTable * table2;
+
+  table1 = OperatorTable_create();
+
+  OperatorTable_setOperator(table1, "moi", "pass");
+  OperatorTable_setOperator(table1, "toi", "tonpass");
+  OperatorTable_setOperator(table1, "moi", "monpass");
+  OperatorTable_setOperator(table1, "elle", "sonpass");
+  OperatorTable_setOperator(table1, "lui", "sonpass");
+  OperatorTable_setOperator(table1, "eux", "leurpass");
+
+  /* change the key */
+  oldKey = OperatorCryptKey;
+  OperatorCryptKey = newKey;
+
+  /* generate a randomized key, no need for a truly uniform distribution then use the mod operator */
+  for( i = 0; i < 9; ++i)
+    newKey[i] = (char)('A' + rand() % 26);
+
+  OperatorTable_saveToFile(table1, BASEPATH "/unittest/operator-unittest.db");
+
+  /* generate a new randomized key, no need for a truly uniform distribution then use the mod operator */
+  for( i = 0; i < 9; ++i)
+    newKey[i] = (char)('a' + rand() % 26);
+
+  table2 = OperatorTable_loadFromFile(BASEPATH "/unittest/operator-unittest.db");
+
+  /* the encryption key is different so there must be the correct number of entry but the passwords must not be decryptable */
+  ASSERT_EQUAL(OperatorTable_getRecordCount(table2), 5);
+  ASSERT_NOT_EQUAL_STRING(OperatorTable_getPassword(table2, 0), "monpass");
+  ASSERT_NOT_EQUAL_STRING(OperatorTable_getPassword(table2, 1), "tonpass");
+  ASSERT_NOT_EQUAL_STRING(OperatorTable_getPassword(table2, 2), "sonpass");
+  ASSERT_NOT_EQUAL_STRING(OperatorTable_getPassword(table2, 3), "sonpass");
+  ASSERT_NOT_EQUAL_STRING(OperatorTable_getPassword(table2, 4), "leurpass");
+
+  OperatorTable_destroy(table1);
+  OperatorTable_destroy(table2);
+
+  /* restore original key */
+  OperatorCryptKey = oldKey;
+}
+
 void test_OperatorTable(void)
 {
   BEGIN_TESTS(OperatorTable)
@@ -189,6 +239,7 @@ void test_OperatorTable(void)
     RUN_TEST(test_OperatorTable_findOperator);
     RUN_TEST(test_OperatorTable_removeOperator);
     RUN_TEST(test_OperatorTable_loadAndSave);
+    RUN_TEST(test_OperatorTable_loadAndSave2);
   }
   END_TESTS
 }

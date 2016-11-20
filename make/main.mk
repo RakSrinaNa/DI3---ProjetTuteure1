@@ -1,4 +1,4 @@
-WARNINGS=-Wall -Wimplicit -Wunused -Wshadow -Wconversion -Wfloat-equal -Wparentheses -Wundef -Wextra --std=c89 -Wstrict-prototypes -Wwrite-strings -Wconversion -fdiagnostics-show-option -Werror ${EXTRA_WARNINGS}
+WARNINGS=-Wall -Wimplicit -Wunused -Wunused-result -Wshadow -Wconversion -Wfloat-equal -Wparentheses -Wundef -Wextra --std=c89 -Wstrict-prototypes -Wwrite-strings -Wconversion -fdiagnostics-show-option -Werror ${EXTRA_WARNINGS}
 CFLAGS= ${WARNINGS} -Iinclude -fPIC
 RELEASE_CFLAGS= -Wuninitialized -DNDEBUG 
 DEBUG_CFLAGS= -g3 -ggdb3 
