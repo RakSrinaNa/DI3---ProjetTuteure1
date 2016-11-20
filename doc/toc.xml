@@ -432,6 +432,7 @@
       <topic label="ASSERT_EQUAL_DOUBLE" href="group__UnitTest.html#gac0d4e17fdbe3f5ff8259f519d8a83973"/>
       <topic label="ASSERT_EQUAL_STRING" href="group__UnitTest.html#gadc6e9fd7e1a6de46fe249b6acc1ea809"/>
       <topic label="ASSERT_NOT_EQUAL" href="group__UnitTest.html#gab5429200bb3a859fbfa99b52ec314883"/>
+      <topic label="ASSERT_NOT_EQUAL_STRING" href="group__UnitTest.html#gab4c0e748e5a9f7ac2c7f6f1fcd332fc4"/>
       <topic label="BEGIN_TESTS" href="group__UnitTest.html#gac5bac33688f7989a651226752508d64f"/>
       <topic label="END_TESTS" href="group__UnitTest.html#ga6fb525f503f98aa262cf08158d924a1f"/>
       <topic label="RUN_TEST" href="group__UnitTest.html#ga6d22b2e20a26b0d72b5c15912b4e211e"/>
@@ -663,6 +664,7 @@
         <topic label="BASEPATH" href="Config_8h.html#a617d5cce29915439bd7b51852c71e5ed"/>
         <topic label="extern" href="Config_8h.html#a2a624a765564411c0db3a2bee940f8bc"/>
         <topic label="fatalError" href="Config_8h.html#ae16aac0ba57287421b17ec5b85812c3e"/>
+        <topic label="goto" href="Config_8h.html#af89de7e1e95cb373208dae93b2b8a303"/>
         <topic label="IMPLEMENT" href="Config_8h.html#a6268a7076dbbc325138c8a4cae8f6eee"/>
         <topic label="index" href="Config_8h.html#a8227c495a4fdf3385a170810f90c2b78"/>
         <topic label="MAXVALUE" href="Config_8h.html#a305e727a769118647a7609e79221d7dd"/>
@@ -679,11 +681,18 @@
         <topic label="tolower" href="Config_8h.html#a0ce4bb6a1988a03e508025a3a52a70c0"/>
         <topic label="toupper" href="Config_8h.html#ad14f1a210985c7c556e5e0959b091913"/>
         <topic label="UNUSED" href="Config_8h.html#a0bdd8a945caf2eb28640128d1fed930c"/>
+        <topic label="calloc" href="Config_8h.html#a35006a6ab2bc59d2c5da1985eb89f1c5"/>
         <topic label="Config_init" href="Config_8h.html#a75875d4a18ca6c40fe14ec54c2337011"/>
         <topic label="debugFatalError" href="Config_8h.html#a23875c54fb78fb983a41534f44dcf04f"/>
+        <topic label="fgets" href="Config_8h.html#add73e897d06fa0bdd9cf6426a3a5d141"/>
+        <topic label="fopen" href="Config_8h.html#a68f1a3c301ed35660c38e15b954ca669"/>
+        <topic label="fread" href="Config_8h.html#a126311dc9b227366f89d157c5008ef3d"/>
+        <topic label="fwrite" href="Config_8h.html#a2415a94555eb3dc73e5da905fb9adf5a"/>
         <topic label="isSpecified" href="Config_8h.html#a3e9443fe5fdc63bf78030835dfbf6070"/>
+        <topic label="malloc" href="Config_8h.html#abea984d1fd4c0b19f0d70615ea64e2a1"/>
         <topic label="memmove" href="Config_8h.html#a802c986820d3866639922b6bc9484f90"/>
         <topic label="memset" href="Config_8h.html#ace6ee45c30e71865e6eb635200379db9"/>
+        <topic label="realloc" href="Config_8h.html#abe7615fd849ef7294c8f9c12ce7c515d"/>
         <topic label="setupOverridable" href="Config_8h.html#a567c428a4f5e99fba34da14717f5cebb"/>
         <topic label="snprintf" href="Config_8h.html#ad76145a6edfc98981ded8815a760e0cd"/>
         <topic label="STUDENT_FIRSTNAME" href="Config_8h.html#adc9cf14c8bbf4334fb13b69dda6c4363"/>
@@ -894,6 +903,7 @@
         <topic label="__func__" href="Registry_8h.html#a7d6e1cf1a8d53f38471e9e9db3faf740"/>
         <topic label="REGISTRY_USINGFUNCTION" href="Registry_8h.html#acf9f693da4c3eae7b4af21fc2f86fcd6"/>
         <topic label="Registry_dumpUsage" href="Registry_8h.html#a7011b21a24e6f447a85079b0a1744efd"/>
+        <topic label="Registry_getUsage" href="Registry_8h.html#a3187b9695c4172b80429bdb1ec4f51e6"/>
         <topic label="Registry_init" href="Registry_8h.html#adb5515276462ff6c3271b26100f6c8f3"/>
         <topic label="Registry_usingFunction" href="Registry_8h.html#a0caca2fa092d5c0feb6bd61fc0eceba9"/>
       </topic>
@@ -903,6 +913,7 @@
         <topic label="ASSERT_EQUAL_DOUBLE" href="group__UnitTest.html#gac0d4e17fdbe3f5ff8259f519d8a83973"/>
         <topic label="ASSERT_EQUAL_STRING" href="group__UnitTest.html#gadc6e9fd7e1a6de46fe249b6acc1ea809"/>
         <topic label="ASSERT_NOT_EQUAL" href="group__UnitTest.html#gab5429200bb3a859fbfa99b52ec314883"/>
+        <topic label="ASSERT_NOT_EQUAL_STRING" href="group__UnitTest.html#gab4c0e748e5a9f7ac2c7f6f1fcd332fc4"/>
         <topic label="BEGIN_TESTS" href="group__UnitTest.html#gac5bac33688f7989a651226752508d64f"/>
         <topic label="END_TESTS" href="group__UnitTest.html#ga6fb525f503f98aa262cf08158d924a1f"/>
         <topic label="RUN_TEST" href="group__UnitTest.html#ga6d22b2e20a26b0d72b5c15912b4e211e"/>

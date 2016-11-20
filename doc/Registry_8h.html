@@ -183,6 +183,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a7011b21a24e6f447a85079b0a1744efd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Registry_8h.html#a7011b21a24e6f447a85079b0a1744efd">Registry_dumpUsage</a> (void)</td></tr>
 <tr class="memdesc:a7011b21a24e6f447a85079b0a1744efd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display the usage of the provided function.  <a href="#a7011b21a24e6f447a85079b0a1744efd">More...</a><br /></td></tr>
 <tr class="separator:a7011b21a24e6f447a85079b0a1744efd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3187b9695c4172b80429bdb1ec4f51e6"><td class="memItemLeft" align="right" valign="top">long int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Registry_8h.html#a3187b9695c4172b80429bdb1ec4f51e6">Registry_getUsage</a> (const char *name)</td></tr>
+<tr class="memdesc:a3187b9695c4172b80429bdb1ec4f51e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the usage counter of the function.  <a href="#a3187b9695c4172b80429bdb1ec4f51e6">More...</a><br /></td></tr>
+<tr class="separator:a3187b9695c4172b80429bdb1ec4f51e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb5515276462ff6c3271b26100f6c8f3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Registry_8h.html#adb5515276462ff6c3271b26100f6c8f3">Registry_init</a> (void)</td></tr>
 <tr class="memdesc:adb5515276462ff6c3271b26100f6c8f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the registry.  <a href="#adb5515276462ff6c3271b26100f6c8f3">More...</a><br /></td></tr>
 <tr class="separator:adb5515276462ff6c3271b26100f6c8f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -266,6 +269,31 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a3187b9695c4172b80429bdb1ec4f51e6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long int Registry_getUsage </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the usage counter of the function. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>the name of the function </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the usage counter </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="adb5515276462ff6c3271b26100f6c8f3"></a>
 <div class="memitem">
 <div class="memproto">
@@ -324,7 +352,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="Registry_8h.html">Registry.h</a></li>
-    <li class="footer">Generated on Mon Oct 3 2016 10:01:35 for Travaux pratiques de langage C by
+    <li class="footer">Generated on Thu Nov 17 2016 11:53:26 for Travaux pratiques de langage C by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

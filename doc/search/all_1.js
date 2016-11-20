@@ -10,6 +10,7 @@ var searchData=
   ['assert_5fequal_5fdouble',['ASSERT_EQUAL_DOUBLE',['../group__UnitTest.html#gac0d4e17fdbe3f5ff8259f519d8a83973',1,'UnitTest.h']]],
   ['assert_5fequal_5fstring',['ASSERT_EQUAL_STRING',['../group__UnitTest.html#gadc6e9fd7e1a6de46fe249b6acc1ea809',1,'UnitTest.h']]],
   ['assert_5fnot_5fequal',['ASSERT_NOT_EQUAL',['../group__UnitTest.html#gab5429200bb3a859fbfa99b52ec314883',1,'UnitTest.h']]],
+  ['assert_5fnot_5fequal_5fstring',['ASSERT_NOT_EQUAL_STRING',['../group__UnitTest.html#gab4c0e748e5a9f7ac2c7f6f1fcd332fc4',1,'UnitTest.h']]],
   ['a_20specialized_20treeview_20model_20backed_20by_20our_20data_20structure_20instead_20of_20gtk_2b_20ones',['A specialized treeview model backed by our data structure instead of GTK+ ones',['../group__GtkCatalogModel.html',1,'']]],
   ['a_20specialized_20treeview_20model_20backed_20by_20our_20data_20structure_20instead_20of_20gtk_2b_20ones',['A specialized treeview model backed by our data structure instead of GTK+ ones',['../group__GtkCustomerModel.html',1,'']]]
 ];

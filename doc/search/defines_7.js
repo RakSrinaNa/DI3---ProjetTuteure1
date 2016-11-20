@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['registry_5fusingfunction',['REGISTRY_USINGFUNCTION',['../Registry_8h.html#acf9f693da4c3eae7b4af21fc2f86fcd6',1,'Registry.h']]]
+  ['overridable',['OVERRIDABLE',['../Config_8h.html#ab53aaf867a7d82116bd677a29fd1b628',1,'Config.h']]]
 ];
