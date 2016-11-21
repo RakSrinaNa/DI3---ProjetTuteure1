@@ -78,7 +78,7 @@ void IMPLEMENT(Document_saveToFile)(Document * document, const char * filename) 
     {
         fatalError("Write error");
     }
-    while(currentRow != NULL)
+    while(currentRow != NULL) /* Write all the rows in file */
     {
         DocumentRow_writeRow(currentRow, file);
         currentRow = currentRow->next;
@@ -119,7 +119,7 @@ void IMPLEMENT(Document_loadFromFile)(Document * document, const char * filename
 
     for(i = 0; i < rowsCount; i++)
     {
-        if(i == 0)
+        if(i == 0) /* If it's the first element */
         {
             currentRow = DocumentRow_readRow(file);
             document->rows = currentRow;

@@ -134,7 +134,7 @@ void IMPLEMENT(PrintFormat_loadFromFile)(PrintFormat * format, const char * file
 static char * appendLines(char * oldLine, char * newLine)
 {
     char * processedLine;
-    if(compareString(oldLine, "") != 0)
+    if(compareString(oldLine, "") != 0) /* If we had previous line(s), add a \n */
     {
         processedLine = concatenateString(oldLine, "\n");
         free(oldLine);
@@ -150,7 +150,7 @@ static char * readLine(FILE * fichier)
     char tempChar[2] = {'\0'};
     char * stringRead = duplicateString("");
     char * charRead;
-    while((charRead = fgets(tempChar, 2, fichier)) != NULL && charRead[0] != '\n' && charRead[0] != '\0')
+    while((charRead = fgets(tempChar, 2, fichier)) != NULL && charRead[0] != '\n' && charRead[0] != '\0') /* While we didn't reach the end of the line (\n or \0 excluded in the return)*/
     {
         char * lineToFree = stringRead;
         stringRead = concatenateString(stringRead, charRead);

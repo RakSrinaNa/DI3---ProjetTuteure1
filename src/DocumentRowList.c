@@ -157,9 +157,9 @@ void IMPLEMENT(DocumentRowList_insertBefore)(DocumentRow ** list, DocumentRow * 
     }
     else
     {
-        while(beforeElement->next != position && beforeElement->next != NULL)
+        while(beforeElement->next != position && beforeElement->next != NULL) /* While we didn't reach the position */
         {
-            beforeElement = beforeElement->next;
+            beforeElement = beforeElement->next; /* Keep the element before */
         }
         if(beforeElement->next == NULL)
         {
@@ -191,9 +191,9 @@ void IMPLEMENT(DocumentRowList_removeRow)(DocumentRow ** list, DocumentRow * pos
     }
     else
     {
-        while(beforeElement->next != position && beforeElement->next != NULL)
+        while(beforeElement->next != position && beforeElement->next != NULL) /* While we didn't reach the position */
         {
-            beforeElement = beforeElement->next;
+            beforeElement = beforeElement->next; /* Memorize the element before */
         }
         if(beforeElement->next == NULL)
         {

@@ -84,7 +84,7 @@ DictionaryEntry * IMPLEMENT(Dictionary_getEntry)(Dictionary * dictionary, const 
 void IMPLEMENT(Dictionary_setStringEntry)(Dictionary * dictionary, const char * name, const char * value)
 {
     DictionaryEntry * dictionaryEntry = Dictionary_getEntry(dictionary, name);
-    if(dictionaryEntry == NULL)
+    if(dictionaryEntry == NULL) /* If the entry doesn't exists, create a new one */
     {
         DictionaryEntry * newEntries;
         dictionary->count++;
@@ -96,7 +96,7 @@ void IMPLEMENT(Dictionary_setStringEntry)(Dictionary * dictionary, const char * 
         dictionaryEntry = (dictionary->entries) + dictionary->count - 1;
         dictionaryEntry->name = duplicateString(name);
     }
-    else if(dictionaryEntry->type == STRING_ENTRY)
+    else if(dictionaryEntry->type == STRING_ENTRY) /* Free last value if it was a string */
     {
         free(dictionaryEntry->value.stringValue);
     }
@@ -112,7 +112,7 @@ void IMPLEMENT(Dictionary_setStringEntry)(Dictionary * dictionary, const char * 
 void IMPLEMENT(Dictionary_setNumberEntry)(Dictionary * dictionary, const char * name, double value)
 {
     DictionaryEntry * dictionaryEntry = Dictionary_getEntry(dictionary, name);
-    if(dictionaryEntry == NULL)
+    if(dictionaryEntry == NULL) /* If the entry doesn't exists, create a new one */
     {
         DictionaryEntry * newEntries;
         dictionary->count++;
@@ -124,7 +124,7 @@ void IMPLEMENT(Dictionary_setNumberEntry)(Dictionary * dictionary, const char * 
         dictionaryEntry = (dictionary->entries) + dictionary->count - 1;
         dictionaryEntry->name = duplicateString(name);
     }
-    else if(dictionaryEntry->type == STRING_ENTRY)
+    else if(dictionaryEntry->type == STRING_ENTRY) /* Free last value if it was a string */
     {
         free(dictionaryEntry->value.stringValue);
     }
@@ -142,19 +142,19 @@ char * IMPLEMENT(Dictionary_format)(Dictionary * dictionary, const char * format
 {
     char * formattedText = duplicateString("");
     int readPosition = 0;
-    while(*(format + readPosition) != '\0')
+    while(*(format + readPosition) != '\0') /* While we didn't reach the end */
     {
-        if(*(format + readPosition) == '%')
+        if(*(format + readPosition) == '%') /* If we found a % */
         {
             readPosition++;
-            if(*(format + readPosition) == '%')
+            if(*(format + readPosition) == '%') /* If the following char is a % (so we found %%), write % in formattedText */
             {
                 char * toFreeLine = formattedText;
                 formattedText = concatenateString(formattedText, "%");
                 free(toFreeLine);
                 readPosition++;
             }
-            else
+            else /* Append the formatted value to formattedText */
             {
                 const char * endMarker = indexOfString(format + readPosition, "%");
                 char * formattingSequence = subString(format + readPosition, endMarker);
@@ -167,7 +167,7 @@ char * IMPLEMENT(Dictionary_format)(Dictionary * dictionary, const char * format
                 readPosition = (int) (endMarker - format);
             }
         }
-        else
+        else /* If it wasn't a %, append content to formattedText */
         {
             char * toFreeLine = formattedText;
             char * toInsert = subString(format + readPosition, format + readPosition + 1);
@@ -182,6 +182,7 @@ char * IMPLEMENT(Dictionary_format)(Dictionary * dictionary, const char * format
 
 static char * getFormattedValue(Dictionary * dictionary, const char * formattingSequence)
 {
+    /* Modifiers */
     int precisionModifier = -1;
     int minModifier = 1;
     int maxModifier = -1;
@@ -192,11 +193,11 @@ static char * getFormattedValue(Dictionary * dictionary, const char * formatting
     DictionaryEntry * entry;
     const char * varModifiersStart = (char*)indexOfString(formattingSequence, "{");
     const char * varModifiersEnd = varModifiersStart + 1;
-    if(varModifiersStart == NULL)
+    if(varModifiersStart == NULL) /* If we don't have any modifiers, the var name is the format string */
     {
         varName = duplicateString(formattingSequence);
     }
-    else
+    else /* Substring the var name */
     {
         varName = subString(formattingSequence, varModifiersStart);
     }
@@ -206,101 +207,84 @@ static char * getFormattedValue(Dictionary * dictionary, const char * formatting
     {
         fatalError("Entry unknown");
     }
-    if(varModifiersStart == NULL)
+    if(varModifiersStart != NULL) /* If we have modifiers */
     {
-        if(entry->type == STRING_ENTRY)
+        varModifiersStart++;
+        while((varModifiersEnd = getNextEnd(varModifiersStart)) != NULL) /* For each one, we modify our modifier variables */
         {
-            free(formatted);
-            formatted = duplicateString(entry->value.stringValue);
+            char * command;
+            char * commandValue;
+            const char * equalSign = indexOfString(varModifiersStart, "=");
+            if(equalSign == NULL || varModifiersEnd <= equalSign)
+            {
+                fatalError("Wrong format");
+            }
+            command = subString(varModifiersStart, equalSign); /* Read the command */
+            commandValue = subString(equalSign + 1, varModifiersEnd); /* Read the command value */
+            if(icaseCompareString(command, "precision") == 0) /* Process the precision modifier */
+            {
+                char * end = NULL;
+                char ** endptr = &end;
+                double d = strtod(commandValue, endptr);
+                if(entry->type != NUMBER_ENTRY)
+                {
+                    fatalError("Invalid modifier");
+                }
+                if(*end == '\0') /* If strtod found a number until the end */
+                {
+                    precisionModifier = (int) d;
+                }
+                else
+                {
+                    fatalError("Wrong format");
+                }
+            }
+            else if(icaseCompareString(command, "min") == 0) /* Process the min modifier */
+            {
+                char * end = NULL;
+                char ** endptr = &end;
+                double d = strtod(commandValue, endptr);
+                if(*end == '\0') /* If strtod found a number until the end */
+                {
+                    minModifier = (int) d;
+                }
+                else
+                {
+                    fatalError("Wrong format");
+                }
+            }
+            else if(icaseCompareString(command, "max") == 0) /* Process the max modifier */
+            {
+                char * end = NULL;
+                char ** endptr = &end;
+                double d = strtod(commandValue, endptr);
+                if(entry->type != STRING_ENTRY)
+                {
+                    fatalError("Invalid modifier");
+                }
+                if(*end == '\0') /* If strtod found a number until the end */
+                {
+                    maxModifier = (int) d;
+                }
+                else
+                {
+                    fatalError("Wrong format");
+                }
+            }
+            else if(icaseCompareString(command, "case") == 0) /* Process the case modifier */
+            {
+                if(entry->type != STRING_ENTRY)
+                {
+                    fatalError("Invalid modifier");
+                }
+                caseModifier = *commandValue;
+            }
+            free(command);
+            free(commandValue);
+            varModifiersStart = varModifiersEnd + 1;
         }
-        else if(entry->type == NUMBER_ENTRY)
-        {
-            char buffer[100] = {0};
-            free(formatted);
-            sprintf(buffer, "%f", entry->value.numberValue);
-            formatted = duplicateString(buffer);
-        }
-        else
-        {
-            fatalError("Incorrect entry type");
-        }
-        return formatted;
     }
-    varModifiersStart++;
-    while((varModifiersEnd = getNextEnd(varModifiersStart)) != NULL)
-    {
-        char * command;
-        char * commandValue;
-        const char * equalSign = indexOfString(varModifiersStart, "=");
-        if(equalSign == NULL || varModifiersEnd <= equalSign)
-        {
-            fatalError("Wrong format");
-        }
-        command = subString(varModifiersStart, equalSign);
-        commandValue = subString(equalSign + 1, varModifiersEnd);
-        if(icaseCompareString(command, "precision") == 0)
-        {
-            char * end = NULL;
-            char ** endptr = &end;
-            double d = strtod(commandValue, endptr);
-            if(entry->type != NUMBER_ENTRY)
-            {
-                fatalError("Invalid modifier");
-            }
-            if(*end == '\0') /* If strtod found a number until the end */
-            {
-                precisionModifier = (int) d;
-            }
-            else
-            {
-                fatalError("Wrong format");
-            }
-        }
-        else if(icaseCompareString(command, "min") == 0)
-        {
-            char * end = NULL;
-            char ** endptr = &end;
-            double d = strtod(commandValue, endptr);
-            if(*end == '\0') /* If strtod found a number until the end */
-            {
-                minModifier = (int) d;
-            }
-            else
-            {
-                fatalError("Wrong format");
-            }
-        }
-        else if(icaseCompareString(command, "max") == 0)
-        {
-            char * end = NULL;
-            char ** endptr = &end;
-            double d = strtod(commandValue, endptr);
-            if(entry->type != STRING_ENTRY)
-            {
-                fatalError("Invalid modifier");
-            }
-            if(*end == '\0') /* If strtod found a number until the end */
-            {
-                maxModifier = (int) d;
-            }
-            else
-            {
-                fatalError("Wrong format");
-            }
-        }
-        else if(icaseCompareString(command, "case") == 0)
-        {
-            if(entry->type != STRING_ENTRY)
-            {
-                fatalError("Invalid modifier");
-            }
-            caseModifier = *commandValue;
-        }
-        free(command);
-        free(commandValue);
-        varModifiersStart = varModifiersEnd + 1;
-    }
-    if(entry->type == STRING_ENTRY)
+    if(entry->type == STRING_ENTRY) /* Format a string */
     {
         char buffer[100] = {0};
         char numberFormat[10] = {0};
@@ -314,6 +298,8 @@ static char * getFormattedValue(Dictionary * dictionary, const char * formatting
             sprintf(numberFormat, "%%-%ds", minModifier);
         }
         sprintf(buffer, numberFormat, entry->value.stringValue);
+
+        /* Apply case modifier */
         if(caseModifier == ' ')
         {
             formatted = duplicateString(buffer);
@@ -329,7 +315,7 @@ static char * getFormattedValue(Dictionary * dictionary, const char * formatting
             formatted = duplicateString(buffer);
         }
     }
-    else if(entry->type == NUMBER_ENTRY)
+    else if(entry->type == NUMBER_ENTRY) /* Format a number */
     {
         char buffer[100] = {0};
         char numberFormat[10] = {0};
