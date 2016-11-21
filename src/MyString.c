@@ -269,7 +269,7 @@ const char * IMPLEMENT(indexOfChar)(const char *str, char c) {
  */
 char * IMPLEMENT(subString)(const char * start, const char * end) {
     unsigned int i = 0;
-    char *result;
+    char * result;
     if ((result = (char *) malloc((long unsigned int)(end - start + 1) * sizeof(char))) == NULL)
     {
         fatalError("Erreur allocation malloc");

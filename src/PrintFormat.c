@@ -21,6 +21,7 @@
 #include <Dictionary.h>
 
 static char * readLine(FILE * fichier);
+static char * appendLines(char * oldLine, char * newLine);
 
 /** Initialize a print format
  * @param format a print format
@@ -53,35 +54,56 @@ void IMPLEMENT(PrintFormat_loadFromFile)(PrintFormat * format, const char * file
 {
     FILE * file;
     char * lineRead;
-    int currentCategory = 0;
+    int currentCategory = -1;
     if((file = fopen(filename, "r")) == NULL)
     {
         fatalError("Error opening file");
     }
-    while(currentCategory != 4 && (lineRead = readLine(file)) != NULL)
+
+    while(currentCategory != 4 && (lineRead = readLine(file)) != NULL) /* While we didn't reach the end of file or the .END */
     {
-        if(icaseStartWith(".", lineRead))
+        if((icaseStartWith(".NAME", lineRead) == 1) || (icaseStartWith(".HEADER", lineRead) == 1) || (icaseStartWith(".ROW", lineRead) == 1) || (icaseStartWith(".FOOTER", lineRead) == 1) || (icaseStartWith(".END", lineRead) == 1)) /* If we found a marker (.NAME, .HEADER ...) */
         {
-            if(icaseStartWith("NAME", lineRead + 1))
+            if(icaseStartWith("NAME", lineRead + 1) == 1)
             {
+                if(currentCategory != -1)
+                {
+                    fatalError("File format is not correct");
+                }
                 currentCategory = 0;
                 free(format->name);
-                format->name = duplicateString(lineRead + 6);
+                format->name = duplicateString(lineRead + stringLength(".NAME") + 1); /* Read the name after the ".NAME " */
             }
-            else if(icaseStartWith("HEADER", lineRead + 1))
+            else if(icaseStartWith("HEADER", lineRead + 1) == 1)
             {
+                if(currentCategory != 0)
+                {
+                    fatalError("File format is not correct");
+                }
                 currentCategory = 1;
             }
-            else if(icaseStartWith("ROW", lineRead + 1))
+            else if(icaseStartWith("ROW", lineRead + 1) == 1)
             {
+                if(currentCategory != 1)
+                {
+                    fatalError("File format is not correct");
+                }
                 currentCategory = 2;
             }
-            else if(icaseStartWith("FOOTER", lineRead + 1))
+            else if(icaseStartWith("FOOTER", lineRead + 1) == 1)
             {
+                if(currentCategory != 2)
+                {
+                    fatalError("File format is not correct");
+                }
                 currentCategory = 3;
             }
-            else if(icaseStartWith("END", lineRead + 1))
+            else if(icaseStartWith("END", lineRead + 1) == 1)
             {
+                if(currentCategory != 3)
+                {
+                    fatalError("File format is not correct");
+                }
                 currentCategory = 4;
             }
             else
@@ -91,72 +113,52 @@ void IMPLEMENT(PrintFormat_loadFromFile)(PrintFormat * format, const char * file
         }
         else
         {
-            char * newCategory;
             switch(currentCategory)
             {
                 case 1:
-                    if(compareString(format->header, "") != 0)
-                    {
-                        newCategory = concatenateString(format->header, "\n");
-                        free(format->header);
-                        format->header = newCategory;
-                    }
-                    newCategory = concatenateString(format->header, lineRead);
-                    free(format->header);
-                    format->header = newCategory;
+                    format->header = appendLines(format->header, lineRead);
                 break;
                 case 2:
-                    if(compareString(format->row, "") != 0)
-                    {
-                        newCategory = concatenateString(format->row, "\n");
-                        free(format->row);
-                        format->row = newCategory;
-                    }
-                    newCategory = concatenateString(format->row, lineRead);
-                    free(format->row);
-                    format->row = newCategory;
+                    format->row = appendLines(format->row, lineRead);
                 break;
                 case 3:
-                    if(compareString(format->footer, "") != 0)
-                    {
-                        newCategory = concatenateString(format->footer, "\n");
-                        free(format->footer);
-                        format->footer = newCategory;
-                    }
-                    newCategory = concatenateString(format->footer, lineRead);
-                    free(format->footer);
-                    format->footer = newCategory;
+                    format->footer = appendLines(format->footer, lineRead);
                 break;
             }
         }
         free(lineRead);
     }
     fclose(file);
-    if(0)
-        provided_PrintFormat_loadFromFile(format, filename);
+}
+
+static char * appendLines(char * oldLine, char * newLine)
+{
+    char * processedLine;
+    if(compareString(oldLine, "") != 0)
+    {
+        processedLine = concatenateString(oldLine, "\n");
+        free(oldLine);
+        oldLine = processedLine;
+    }
+    processedLine = concatenateString(oldLine, newLine);
+    free(oldLine);
+    return processedLine;
 }
 
 static char * readLine(FILE * fichier)
 {
-    unsigned int stringReadLength = 1;
     char tempChar[2] = {'\0'};
-    char * stringRead = NULL;
+    char * stringRead = duplicateString("");
     char * charRead;
     while((charRead = fgets(tempChar, 2, fichier)) != NULL && charRead[0] != '\n' && charRead[0] != '\0')
     {
-        char * newStringRead = NULL;
-        stringReadLength++;
-        if((newStringRead = (char *)realloc(stringRead, stringReadLength * sizeof(char))) == NULL)
-        {
-            fatalError("Error realloc");
-        }
-        stringRead = newStringRead;
-        stringRead[stringReadLength - 2] = *charRead;
+        char * lineToFree = stringRead;
+        stringRead = concatenateString(stringRead, charRead);
+        free(lineToFree);
     }
     if(stringRead == NULL)
     {
         return NULL;
     }
-    stringRead[stringReadLength - 1] = '\0';
     return stringRead;
 }
