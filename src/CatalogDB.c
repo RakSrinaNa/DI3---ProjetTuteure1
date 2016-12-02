@@ -87,7 +87,7 @@ void IMPLEMENT(CatalogDB_close)(CatalogDB * catalogDB) {
     fseek(catalogDB->file, 0, SEEK_SET); /* Go at beginning of file */
 	if(fwrite(&(catalogDB->recordCount), sizeof(int), 1, catalogDB->file) != 1) /* Write the number of records */
     {
-        fatalError("Read error");
+        fatalError("Write error");
     }
 	fclose(catalogDB->file);
 	free(catalogDB);

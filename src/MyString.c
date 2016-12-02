@@ -141,13 +141,13 @@ void IMPLEMENT(copyStringWithLength)(char * dest, const char * src, size_t destS
  * @param str the string to duplicate
  */
 char * IMPLEMENT(duplicateString)(const char * str) {
-    size_t length = stringLength(str) + 1U;
+    size_t strLength = stringLength(str) + 1U;
     char *result;
-    if ((result = (char *) malloc(length * sizeof(char))) == NULL)
+    if ((result = (char *) malloc(strLength * sizeof(char))) == NULL)
     {
         fatalError("Erreur allocation malloc");
     }
-    copyStringWithLength(result, str, length);
+    copyStringWithLength(result, str, strLength);
     return result;
 }
 
@@ -292,22 +292,8 @@ const char * IMPLEMENT(indexOfString)(const char *meule_de_foin, const char *aig
     int i = 0;
     while (meule_de_foin[i] != '\0') /* While we didn't hit the end of the mail string */
     {
-        if (meule_de_foin[i] == aiguille[0]) /* If we found the beginning of the string to search */
-        {
-            int j = 1;
-            while (meule_de_foin[i + j] != '\0' && aiguille[j] != '\0') /* While non of the strings hit the end */
-            {
-                if (meule_de_foin[i + j] != aiguille[j]) /* If the character found isn't the same, we stop */
-                {
-                    break;
-                }
-                j++;
-            }
-            if (aiguille[j] == '\0') /* If we searched up the the end of the string to find, we found it */
-            {
-                return &meule_de_foin[i];
-            }
-        }
+        if(icaseStartWith(aiguille, meule_de_foin + i))
+            return meule_de_foin + i;
         i++;
     }
     return NULL;
@@ -317,11 +303,10 @@ const char * IMPLEMENT(indexOfString)(const char *meule_de_foin, const char *aig
  * @param str the string to convert
  */
 void IMPLEMENT(makeUpperCaseString)(char * str) {
-    char *result = str;
-    while (*result != '\0')
+    while (*str != '\0')
     {
-        *result = toUpperChar(*result);
-        result++;
+        *str = toUpperChar(*str);
+        str++;
     }
 }
 
@@ -329,11 +314,10 @@ void IMPLEMENT(makeUpperCaseString)(char * str) {
  * @param str the string to convert
  */
 void IMPLEMENT(makeLowerCaseString)(char * str) {
-    char *result = str;
-    while (*result != '\0')
+    while (*str != '\0')
     {
-        *result = toLowerChar(*result);
-        result++;
+        *str = toLowerChar(*str);
+        str++;
     }
 }
 
