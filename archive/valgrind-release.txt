@@ -1,10 +1,10 @@
 make[1]: Entering directory '/mnt/hgfs/S5/C/ProjetTutore1'
 G_SLICE=always-malloc G_DEBUG=gc-friendly valgrind --tool=memcheck --leak-check=full --track-origins=yes --suppressions=make/valgrind-suppressions.txt  --gen-suppressions=no release/facturation disable-gui  2>&1
-==34472== Memcheck, a memory error detector
-==34472== Copyright (C) 2002-2015, and GNU GPL'd, by Julian Seward et al.
-==34472== Using Valgrind-3.12.0.SVN and LibVEX; rerun with -h for copyright info
-==34472== Command: release/facturation disable-gui
-==34472== 
+==54403== Memcheck, a memory error detector
+==54403== Copyright (C) 2002-2015, and GNU GPL'd, by Julian Seward et al.
+==54403== Using Valgrind-3.12.0.SVN and LibVEX; rerun with -h for copyright info
+==54403== Command: release/facturation disable-gui
+==54403== 
 Running preliminary unit test... (specify verbose-unittests for details)
   Testing MyString (disable with disable-unit-MyString)................
   Testing EncryptDecrypt (disable with disable-unit-EncryptDecrypt).
@@ -26,20 +26,20 @@ Registry dump done
 Registry dump by file name (hide with disable-dump-usage)
 Registry dump by file name done
 
-==34472== 
-==34472== HEAP SUMMARY:
-==34472==     in use at exit: 49,212 bytes in 238 blocks
-==34472==   total heap usage: 18,192 allocs, 17,954 frees, 780,794 bytes allocated
-==34472== 
-==34472== LEAK SUMMARY:
-==34472==    definitely lost: 0 bytes in 0 blocks
-==34472==    indirectly lost: 0 bytes in 0 blocks
-==34472==      possibly lost: 0 bytes in 0 blocks
-==34472==    still reachable: 0 bytes in 0 blocks
-==34472==                       of which reachable via heuristic:
-==34472==                         newarray           : 1,536 bytes in 16 blocks
-==34472==         suppressed: 49,212 bytes in 238 blocks
-==34472== 
-==34472== For counts of detected and suppressed errors, rerun with: -v
-==34472== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 18 from 18)
+==54403== 
+==54403== HEAP SUMMARY:
+==54403==     in use at exit: 49,212 bytes in 238 blocks
+==54403==   total heap usage: 18,192 allocs, 17,954 frees, 780,794 bytes allocated
+==54403== 
+==54403== LEAK SUMMARY:
+==54403==    definitely lost: 0 bytes in 0 blocks
+==54403==    indirectly lost: 0 bytes in 0 blocks
+==54403==      possibly lost: 0 bytes in 0 blocks
+==54403==    still reachable: 0 bytes in 0 blocks
+==54403==                       of which reachable via heuristic:
+==54403==                         newarray           : 1,536 bytes in 16 blocks
+==54403==         suppressed: 49,212 bytes in 238 blocks
+==54403== 
+==54403== For counts of detected and suppressed errors, rerun with: -v
+==54403== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 18 from 18)
 make[1]: Leaving directory '/mnt/hgfs/S5/C/ProjetTutore1'

@@ -65,7 +65,7 @@ OperatorTable * IMPLEMENT(OperatorTable_loadFromFile)(const char * filename) {
 	OperatorTable * operatorTable = OperatorTable_create();
 	if((operatorsFile = fopen(filename, "r")) == NULL)
 	{
-		fatalError("Couldn't open file");
+		return operatorTable;
 	}
 	while((userResult = fgets(tempLineUser, OPERATORTABLE_MAXNAMESIZE + 1, operatorsFile)) != NULL && (passwordResult = fgets(tempLinePassword, OPERATORTABLE_MAXPASSWORDSIZE + 1, operatorsFile)) != NULL) /* While we get a user and password from the file */
 	{
@@ -81,10 +81,7 @@ OperatorTable * IMPLEMENT(OperatorTable_loadFromFile)(const char * filename) {
 		decrypt(OperatorCryptKey, passwordResult); /* Decrypt the password string */
 		OperatorTable_setOperator(operatorTable, userResult, passwordResult); /* Save the operator in the table */
 	}
-	if(fclose(operatorsFile) != 0)
-	{
-		fatalError("Couldn't close file");
-	}
+	fclose(operatorsFile);
 	return operatorTable;
 }
 
@@ -125,10 +122,7 @@ void IMPLEMENT(OperatorTable_saveToFile)(OperatorTable * table, const char * fil
 		free(encryptedUser);
 		free(encryptedPassword);
 	}
-	if(fclose(operatorsFile) != 0)
-	{
-		fatalError("Couldn't close file");
-	}
+	fclose(operatorsFile);
 }
 
 /** Get the number of records of a table of operators

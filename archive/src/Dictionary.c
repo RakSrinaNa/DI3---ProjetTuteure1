@@ -287,7 +287,7 @@ static char * getFormattedValue(Dictionary * dictionary, const char * formatting
     if(entry->type == STRING_ENTRY) /* Format a string */
     {
         char buffer[100] = {0};
-        char numberFormat[10] = {0};
+        char numberFormat[50] = {0};
         free(formatted);
         if(maxModifier != -1)
         {
@@ -318,7 +318,7 @@ static char * getFormattedValue(Dictionary * dictionary, const char * formatting
     else if(entry->type == NUMBER_ENTRY) /* Format a number */
     {
         char buffer[100] = {0};
-        char numberFormat[10] = {0};
+        char numberFormat[50] = {0};
         free(formatted);
         if(precisionModifier >= 0)
         {

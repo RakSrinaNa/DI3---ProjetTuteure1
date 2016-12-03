@@ -99,23 +99,23 @@ void IMPLEMENT(CustomerDB_appendRecord)(CustomerDB * customerDB, CustomerRecord 
 }
 
 void IMPLEMENT(CustomerDB_insertRecord)(CustomerDB * customerDB, int recordIndex, CustomerRecord * record) {
-    CustomerRecord customRecord;
+    CustomerRecord customerRecord;
     int i;
     for(i = CustomerDB_getRecordCount(customerDB) - 1; i >= recordIndex; i--) /* Shift evry record starting at out index */
     {
-        CustomerDB_readRecord(customerDB, i, &customRecord);
-        CustomerDB_writeRecord(customerDB, i + 1, &customRecord);
+        CustomerDB_readRecord(customerDB, i, &customerRecord);
+        CustomerDB_writeRecord(customerDB, i + 1, &customerRecord);
     }
     CustomerDB_writeRecord(customerDB, recordIndex, record); /* Write record */
 }
 
 void IMPLEMENT(CustomerDB_removeRecord)(CustomerDB * customerDB, int recordIndex) {
-    CustomerRecord customRecord;
+    CustomerRecord customerRecord;
     int i;
     for(i = recordIndex + 1; i < CustomerDB_getRecordCount(customerDB); i++) /* Shift evry record starting at out index */
     {
-        CustomerDB_readRecord(customerDB, i, &customRecord);
-        CustomerDB_writeRecord(customerDB, i - 1, &customRecord);
+        CustomerDB_readRecord(customerDB, i, &customerRecord);
+        CustomerDB_writeRecord(customerDB, i - 1, &customerRecord);
     }
     customerDB->recordCount--; /* Reduce the number of records */
 }

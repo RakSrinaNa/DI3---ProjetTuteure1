@@ -122,7 +122,7 @@ void IMPLEMENT(OperatorTable_saveToFile)(OperatorTable * table, const char * fil
 		free(encryptedUser);
 		free(encryptedPassword);
 	}
-	fatalError("Couldn't close file");
+	fclose(operatorsFile);
 }
 
 /** Get the number of records of a table of operators
